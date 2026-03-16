@@ -147,11 +147,10 @@
   </footer>
 
   <script>
-    // Fonction de défilement corrigée pour prendre en compte le header fixe
     function scrollToSection(id) {
       const element = document.getElementById(id);
       if (element) {
-        const headerHeight = 56; // La hauteur de ta nav
+        const headerHeight = 56; 
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
 
@@ -167,8 +166,6 @@
       if (email.includes('@')) {
         document.getElementById('nl-email').value = '';
         alert('✓ Bienvenue dans la liste !');
-      } else {
-        alert('Merci de saisir un e-mail valide.');
       }
     }
 
@@ -176,8 +173,6 @@
       const email = document.getElementById('cta-email').value;
       if (email.includes('@')) {
         alert('Demande envoyée. Nous reviendrons vers vous rapidement !');
-      } else {
-        alert('Merci de saisir un e-mail valide.');
       }
     }
   </script>
