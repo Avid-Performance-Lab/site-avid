@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AVID Lab — Site Preview</title>
+  <title>AVID Lab — Performance Coaching</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800;900&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
@@ -12,412 +12,172 @@
     body { background: #080808; color: #E8E8E8; font-family: 'Barlow', sans-serif; overflow-x: hidden; }
     .bc { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; }
 
+    /* NAVIGATION */
     .nav { background: rgba(8,8,8,.95); border-bottom: 1px solid #1e1e1e; padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; letter-spacing: 3px; color: #fff; }
-    .nav-links { display: flex; gap: 24px; align-items: center; }
-    .nav-link { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #555; background: none; border: none; cursor: pointer; padding: 0; }
-    .nav-cta { background: #E63946; color: #fff; border: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 18px; border-radius: 4px; cursor: pointer; }
+    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: 2px; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link { background: none; border: none; color: #A0A0A0; cursor: pointer; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color .2s; }
+    .nav-link:hover { color: #E63946; }
 
-    .hero { background: #080808; padding: 80px 40px 60px; position: relative; overflow: hidden; border-bottom: 1px solid #1e1e1e; }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(230,57,70,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(230,57,70,.04) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
-    .hero-glow { position: absolute; top: -120px; right: -120px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(230,57,70,.1) 0%, transparent 70%); pointer-events: none; }
-    .hero-inner { position: relative; }
-    .hero-tag { display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 3px; color: #E63946; text-transform: uppercase; margin-bottom: 20px; }
-    .hero-tag-line { width: 28px; height: 1px; background: #E63946; }
-    .hero-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(48px, 8vw, 100px); line-height: .9; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 22px; }
-    .hero-title .accent { color: #E63946; }
-    .hero-title .outline { -webkit-text-stroke: 1px rgba(255,255,255,.15); color: transparent; }
-    .hero-sub { font-size: 15px; line-height: 1.8; color: #666; max-width: 460px; margin-bottom: 28px; }
-    .hero-versions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
-    .version-card { border-radius: 6px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background .2s; }
-    .version-card.red { background: rgba(230,57,70,.08); border: 1px solid rgba(230,57,70,.25); }
-    .version-card.red:hover { background: rgba(230,57,70,.14); }
-    .version-card.gray { background: rgba(255,255,255,.03); border: 1px solid #1e1e1e; }
-    .version-card.gray:hover { background: rgba(255,255,255,.06); }
-    .version-bar { width: 3px; height: 28px; border-radius: 2px; flex-shrink: 0; }
-    .version-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
-    .version-desc { font-size: 11px; color: #555; margin-top: 2px; }
-    .hero-btns { display: flex; gap: 12px; align-items: center; margin-bottom: 40px; }
-    .btn-red { background: #E63946; color: #fff; border: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 30px; border-radius: 4px; cursor: pointer; transition: opacity .2s; }
-    .btn-red:hover { opacity: .85; }
-    .btn-ghost { background: none; color: #fff; border: 1px solid #1e1e1e; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 30px; border-radius: 4px; cursor: pointer; transition: border-color .2s; }
-    .btn-ghost:hover { border-color: #444; }
-    .hero-stats { display: flex; gap: 48px; padding-top: 28px; border-top: 1px solid #1e1e1e; flex-wrap: wrap; }
-    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 40px; color: #fff; line-height: 1; }
-    .stat-num .red { color: #E63946; font-size: 24px; }
-    .stat-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: #555; text-transform: uppercase; margin-top: 4px; }
+    /* HERO */
+    .hero { padding: 120px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
+    .hero-h1 { font-size: 80px; font-weight: 900; line-height: .9; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-h1 span { color: #E63946; }
+    .hero-p { font-size: 18px; color: #A0A0A0; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
-    .hero-nutr { background: #060e09; padding: 60px 40px; position: relative; overflow: hidden; border-bottom: 1px solid #1e1e1e; }
-    .hero-nutr-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(52,211,153,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,.04) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
-    .hero-nutr-glow { position: absolute; top: -100px; right: -100px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(52,211,153,.08) 0%, transparent 70%); pointer-events: none; }
-    .green-tag { display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 3px; color: #34D399; text-transform: uppercase; margin-bottom: 18px; }
-    .green-line { width: 28px; height: 1px; background: #34D399; }
-    .nutr-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 6vw, 80px); line-height: .9; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 18px; }
-    .nutr-title .green { color: #34D399; }
-    .nutr-title .outline { -webkit-text-stroke: 1px rgba(52,211,153,.15); color: transparent; }
-    .nutr-sub { font-size: 14px; line-height: 1.8; color: #3a5a48; max-width: 420px; margin-bottom: 22px; }
-    .btn-green { background: #34D399; color: #060e09; border: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 30px; border-radius: 4px; cursor: pointer; }
+    /* SECTIONS */
+    section { padding: 100px 40px; border-top: 1px solid #1e1e1e; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-title { font-size: 40px; font-weight: 800; text-transform: uppercase; margin-bottom: 40px; }
+    .section-title span { color: #E63946; }
 
-    .eco { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #1e1e1e; }
-    .eco-card { padding: 64px 52px; position: relative; overflow: hidden; min-height: 320px; }
-    .eco-card.red-card { background: #111; border-top: 3px solid #E63946; }
-    .eco-card.green-card { background: #060e09; border-top: 3px solid #34D399; border-left: 1px solid #1e1e1e; }
-    .eco-num { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
-    .eco-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(30px, 3.5vw, 56px); text-transform: uppercase; line-height: .9; margin-bottom: 16px; }
-    .eco-desc { font-size: 13px; color: #555; line-height: 1.7; max-width: 280px; }
-    .eco-cta { margin-top: 22px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
-    .eco-bg-num { position: absolute; bottom: 10px; right: 20px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 120px; line-height: 1; user-select: none; pointer-events: none; }
-    .soon-badge-sm { display: inline-block; background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.2); border-radius: 3px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: 2px; color: #34D399; padding: 3px 10px; text-transform: uppercase; margin-top: 12px; }
+    /* GRIDS */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: #121212; border: 1px solid #1e1e1e; padding: 32px; border-radius: 4px; transition: border-color .3s; }
+    .card:hover { border-color: #E63946; }
+    .card-h3 { font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; }
+    .card-p { color: #A0A0A0; font-size: 15px; line-height: 1.6; }
 
-    .produits { padding: 80px 40px; background: #080808; border-bottom: 1px solid #1e1e1e; }
-    .section-header { text-align: center; margin-bottom: 48px; }
-    .section-tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 3px; color: #E63946; text-transform: uppercase; margin-bottom: 14px; }
-    .section-tag-line { width: 20px; height: 1px; background: #E63946; }
-    .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(40px, 6vw, 80px); text-transform: uppercase; line-height: .92; margin-bottom: 14px; }
-    .section-sub { font-size: 14px; color: #555; max-width: 420px; margin: 0 auto; line-height: 1.7; }
-    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .product-card { background: #111; padding: 44px 40px; position: relative; overflow: hidden; border-top: 3px solid; transition: background .3s; cursor: pointer; }
-    .product-card:hover { background: #161616; }
-    .product-card.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; background: #0d0d0d; margin-top: 2px; }
-    .card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 22px; }
-    .card-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .card-sub { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: #555; text-transform: uppercase; margin-bottom: 16px; }
-    .card-desc { font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 20px; }
-    .card-features { display: flex; flex-direction: column; gap: 8px; }
-    .feature { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: #777; }
-    .feature-arrow { font-weight: 700; flex-shrink: 0; }
-    .card-cta { margin-top: 28px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
-    .card-bg-num { position: absolute; bottom: 24px; right: 28px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 80px; color: rgba(255,255,255,.025); line-height: 1; user-select: none; pointer-events: none; }
-    .soon-badge { display: inline-block; background: #1a1a1a; border: 1px solid #222; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #555; padding: 4px 10px; border-radius: 3px; margin-bottom: 14px; }
+    /* BUTTONS */
+    .btn-red { background: #E63946; color: #fff; border: none; padding: 16px 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 2px; }
+    .btn-white { background: #fff; color: #000; border: none; padding: 16px 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 2px; }
 
-    .comment { padding: 80px 40px; background: #0a0a0a; border-bottom: 1px solid #1e1e1e; }
-    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; }
-    .step-card { background: #111; padding: 40px 32px; position: relative; }
-    .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
-    .step-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 3px; color: #E63946; }
-    .step-divider { width: 1px; height: 12px; background: #1e1e1e; }
-    .step-role { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; color: #555; text-transform: uppercase; }
-    .step-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-    .step-desc { font-size: 12px; color: #555; line-height: 1.75; }
-    .step-arrow { position: absolute; top: 50%; right: -18px; transform: translateY(-50%); width: 36px; height: 36px; background: #080808; z-index: 1; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; color: #E63946; }
+    /* FOOTER */
+    .footer { padding: 60px 40px; background: #050505; border-top: 1px solid #1e1e1e; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-link { background: none; border: none; color: #555; cursor: pointer; font-size: 12px; text-transform: uppercase; font-weight: 600; }
+    .footer-copy { color: #333; font-size: 11px; }
 
-    .histoire { padding: 80px 40px; background: #080808; border-bottom: 1px solid #1e1e1e; }
-    .histoire-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .quote-card { background: #111; border-radius: 4px; padding: 40px 36px; position: relative; overflow: hidden; border-top: 2px solid #E63946; }
-    .quote-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 19px; line-height: 1.5; color: #fff; margin-bottom: 22px; }
-    .quote-accent { color: #E63946; }
-    .quote-author { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #555; text-transform: uppercase; margin-bottom: 22px; }
-    .tag-cloud { display: flex; flex-wrap: wrap; gap: 7px; }
-    .tag { background: #1a1a1a; border: 1px solid #1e1e1e; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #444; padding: 4px 10px; border-radius: 3px; text-transform: uppercase; }
-    .histoire-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(28px, 3.5vw, 50px); text-transform: uppercase; line-height: .95; margin-bottom: 22px; }
-    .histoire-body { font-size: 14px; color: #555; line-height: 1.8; }
-    .histoire-note { margin-top: 22px; padding: 16px 20px; border-left: 2px solid #E63946; background: rgba(230,57,70,.04); font-size: 13px; color: #666; line-height: 1.65; }
-
-    .newsletter { padding: 60px 40px; background: #080808; border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e; }
-    .newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 60px; flex-wrap: wrap; }
-    .nl-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(28px, 3.5vw, 46px); text-transform: uppercase; line-height: .95; margin-bottom: 12px; }
-    .nl-sub { font-size: 13px; color: #555; line-height: 1.7; max-width: 360px; margin-top: 10px; }
-    .nl-form { display: flex; flex-direction: column; gap: 10px; min-width: 300px; }
-    .nl-input { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; padding: 13px 16px; font-size: 14px; color: #E8E8E8; font-family: 'Barlow', sans-serif; outline: none; }
-    .nl-input:focus { border-color: #E63946; }
-    .nl-input::placeholder { color: #333; }
-    .nl-disclaimer { font-size: 11px; color: #333; text-align: center; }
-
-    .cta-section { background: #E63946; padding: 80px 40px; }
-    .cta-grid { display: flex; align-items: center; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
-    .cta-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(36px, 5vw, 68px); text-transform: uppercase; color: #fff; line-height: .95; margin-bottom: 12px; }
-    .cta-sub { font-size: 14px; color: rgba(255,255,255,.7); max-width: 360px; line-height: 1.6; }
-    .cta-input { background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.22); border-radius: 4px; padding: 13px 16px; font-size: 14px; color: #fff; font-family: 'Barlow', sans-serif; outline: none; width: 290px; }
-    .cta-input::placeholder { color: rgba(255,255,255,.4); }
-    .cta-form { display: flex; flex-direction: column; gap: 10px; }
-    .btn-white { background: #fff; color: #E63946; border: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 24px; border-radius: 4px; cursor: pointer; transition: opacity .2s; }
-    .btn-white:hover { opacity: .9; }
-    .cta-disclaimer { font-size: 11px; color: rgba(255,255,255,.45); text-align: center; }
-
-    .footer { background: #050505; padding: 40px; border-top: 1px solid #1e1e1e; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-    .footer-links { display: flex; gap: 28px; }
-    .footer-link { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; color: #333; text-transform: uppercase; background: none; border: none; cursor: pointer; transition: color .2s; padding: 0; }
-    .footer-link:hover { color: #666; }
-    .footer-copy { font-size: 11px; color: #2a2a2a; }
+    /* NEWSLETTER FORM */
+    .nl-form { margin-top: 40px; display: flex; gap: 12px; justify-content: center; }
+    .nl-input { background: #121212; border: 1px solid #1e1e1e; padding: 12px 20px; color: #fff; width: 300px; border-radius: 2px; }
 
     @media (max-width: 768px) {
-      .nav { padding: 0 20px; }
-      .nav-links { gap: 12px; }
-      .hero, .hero-nutr, .produits, .histoire, .comment, .newsletter, .cta-section { padding-left: 20px; padding-right: 20px; }
-      .eco { grid-template-columns: 1fr; }
-      .eco-card.green-card { border-left: none; border-top: 3px solid #34D399; }
-      .cards-grid { grid-template-columns: 1fr; }
-      .product-card.wide { grid-template-columns: 1fr; }
-      .histoire-grid { grid-template-columns: 1fr; gap: 36px; }
-      .steps-grid { grid-template-columns: 1fr; }
-      .step-arrow { display: none; }
-      .footer { flex-direction: column; align-items: flex-start; gap: 20px; }
-      .footer-links { flex-wrap: wrap; gap: 16px; }
+      .hero-h1 { font-size: 50px; }
+      .grid { grid-template-columns: 1fr; }
+      .nl-form { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="nav">
     <div class="nav-logo bc">AVID</div>
     <div class="nav-links">
-      <button class="nav-link" onclick="scrollTo('produits')">Produits ▾</button>
-      <button class="nav-link" onclick="scrollTo('comment')">Comment ça marche</button>
-      <button class="nav-link" onclick="scrollTo('histoire')">À propos</button>
-      <button class="nav-cta" onclick="scrollTo('contact')">Accès anticipé</button>
+      <button class="nav-link bc" onclick="scrollToSection('produits')">Produits</button>
+      <button class="nav-link bc" onclick="scrollToSection('comment')">Comment ça marche</button>
+      <button class="nav-link bc" onclick="scrollToSection('histoire')">À propos</button>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-inner">
-      <div class="hero-tag"><div class="hero-tag-line"></div>AVID Performance Lab</div>
-      <h1 class="hero-title bc">L'OUTIL<br>QUE LES<br><span class="accent">COACHS</span><br><span class="outline">ATTENDAIENT.</span></h1>
-      <p class="hero-sub">Suivi de programme, cahier d'entrainement, nutrition et RPE — tout connecté, en temps réel. Disponible en version <strong style="color:#fff;font-weight:600">Coach</strong> ou <strong style="color:#fff;font-weight:600">Athlète solo</strong>.</p>
-      <div class="hero-versions">
-        <div class="version-card red" onclick="scrollTo('produits')">
-          <div class="version-bar" style="background:#E63946"></div>
-          <div><div class="version-name bc">AVID Coach</div><div class="version-desc">Dashboard + app athlètes générées</div></div>
-        </div>
-        <div class="version-card gray" onclick="scrollTo('produits')">
-          <div class="version-bar" style="background:#888"></div>
-          <div><div class="version-name bc">AVID Athlète</div><div class="version-desc">App solo — autoprogrammation & stats</div></div>
-        </div>
-      </div>
-      <div class="hero-btns">
-        <button class="btn-red bc" onclick="scrollTo('produits')">Découvrir les outils</button>
-        <button class="btn-ghost bc" onclick="scrollTo('histoire')">Mon histoire</button>
-      </div>
-      <div class="hero-stats">
-        <div><div class="stat-num bc">10<span class="red">ans</span></div><div class="stat-label">de terrain</div></div>
-        <div><div class="stat-num bc">2</div><div class="stat-label">versions disponibles</div></div>
-        <div><div class="stat-num bc">0</div><div class="stat-label">compromis</div></div>
-      </div>
+  <section class="hero">
+    <h1 class="hero-h1 bc">Domine ta <span>Performance</span></h1>
+    <p class="hero-p">L'écosystème de coaching pour les athlètes et les coachs qui exigent de la précision.</p>
+    <div class="nl-form">
+      <input type="email" id="nl-email" class="nl-input" placeholder="Ton e-mail..." />
+      <button class="btn-red bc" onclick="handleNewsletter()">S'abonner</button>
     </div>
   </section>
 
-  <!-- HERO NUTRITION -->
-  <section class="hero-nutr">
-    <div class="hero-nutr-grid"></div>
-    <div class="hero-nutr-glow"></div>
-    <div style="position:relative">
-      <div class="green-tag"><div class="green-line"></div>AVID Nutrition — Bientôt disponible</div>
-      <h2 class="nutr-title bc">PAS DE<br><span class="green">SUPERFLU.</span><br><span class="outline">JUSTE L'ESSENTIEL.</span></h2>
-      <p class="nutr-sub">Une gamme de compléments alimentaires pensée pour les athlètes sérieux. Deux barres, deux objectifs distincts. Des formules simples, des ingrédients qualitatifs.</p>
-      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-        <button class="btn-green bc" onclick="scrollTo('produits')">Liste d'attente</button>
-        <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:#3a5a48;text-transform:uppercase">Lancement prévu 2025</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ECOSYSTEMES -->
-  <div class="eco">
-    <div class="eco-card red-card">
-      <div class="eco-num" style="color:#E63946">01 — Outil digital</div>
-      <div class="eco-title bc">AVID<br><span style="color:#E63946">PERFORMANCE<br>LAB</span></div>
-      <p class="eco-desc">Dashboard coach + app athlète. Tu programmes, l'athlète exécute, tu analyses.</p>
-      <div class="eco-cta" style="color:#E63946" onclick="scrollTo('produits')">Voir le détail</div>
-      <div class="eco-bg-num" style="color:rgba(230,57,70,.04)">01</div>
-    </div>
-    <div class="eco-card green-card">
-      <div class="eco-num" style="color:#34D399">02 — Compléments</div>
-      <div class="eco-title bc">AVID<br><span style="color:#34D399">NUTRITION</span></div>
-      <p class="eco-desc" style="color:#3a5a48">Deux barres, deux objectifs. Simple, qualitatif, sans remplissage.</p>
-      <div class="soon-badge-sm">Bientôt disponible</div>
-      <div class="eco-cta" style="color:#34D399;margin-top:14px" onclick="scrollTo('produits')">Liste d'attente</div>
-      <div class="eco-bg-num" style="color:rgba(52,211,153,.04)">02</div>
-    </div>
-  </div>
-
-  <!-- PRODUITS -->
-  <section class="produits" id="produits">
-    <div class="section-header">
-      <div class="section-tag"><div class="section-tag-line"></div>L'univers AVID<div class="section-tag-line"></div></div>
-      <h2 class="section-title bc">2 ÉCOSYSTÈMES.<br><span style="color:#E63946">1 VISION.</span></h2>
-      <p class="section-sub">La performance ne se limite pas à la salle. Elle se programme, se suit, et se nourrit.</p>
-    </div>
-    <div class="cards-grid">
-      <div class="product-card" style="border-color:#E63946">
-        <div class="card-icon" style="background:rgba(230,57,70,.1)">📋</div>
-        <div class="card-name bc">AVID Coach</div>
-        <div class="card-sub">Dashboard Coach + App Athlète</div>
-        <p class="card-desc">Tu programmes depuis ton dashboard web, tes athlètes exécutent et remplissent leur cahier en temps réel depuis leur téléphone.</p>
-        <div class="card-features">
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Dashboard coach — gestion multi-athlètes</div>
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Génération des apps athlètes</div>
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Synchronisation Firebase temps réel</div>
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Statistiques et progression par athlète</div>
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Suivi nutritionnel et santé</div>
-          <div class="feature"><span class="feature-arrow" style="color:#E63946">→</span>Autonomie athlète configurable</div>
+  <section id="produits">
+    <div class="container">
+      <h2 class="section-title bc">Nos <span>Produits</span></h2>
+      <div class="grid">
+        <div class="card">
+          <h3 class="card-h3 bc">Dashboard Coach</h3>
+          <p class="card-p">Visualisez la fatigue et le volume de vos athlètes en temps réel. Prenez des décisions basées sur la donnée.</p>
         </div>
-        <div class="card-cta bc" style="color:#E63946">Disponible maintenant →</div>
-        <div class="card-bg-num">01</div>
-      </div>
-      <div class="product-card" style="border-color:#aaa">
-        <div class="card-icon" style="background:rgba(255,255,255,.05)">🏋️</div>
-        <div class="card-name bc">AVID Athlète</div>
-        <div class="card-sub">App Solo — Autoprogrammation</div>
-        <p class="card-desc">Tu n'as pas de coach ? Programme toi-même, suis tes séances, note ton RPE et analyse ta progression. Tout le suivi d'un athlète sérieux, en autonomie totale.</p>
-        <div class="card-features">
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Profil athlète auto-géré</div>
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Création de tes propres blocs et semaines</div>
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Cahier d'entraînement numérique + RPE</div>
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Statistiques et progression</div>
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Suivi nutritionnel et santé</div>
-          <div class="feature"><span class="feature-arrow" style="color:#aaa">→</span>Aucun coach requis</div>
+        <div class="card">
+          <h3 class="card-h3 bc">Cahier Athlète</h3>
+          <p class="card-p">L'interface simplifiée pour que l'athlète remonte ses feedbacks sans friction.</p>
         </div>
-        <div class="card-cta bc" style="color:#aaa">Disponible maintenant →</div>
-        <div class="card-bg-num">02</div>
-      </div>
-      <div class="product-card wide" style="border-color:#34D399">
-        <div>
-          <div class="soon-badge">Bientôt disponible</div>
-          <div class="card-icon" style="background:rgba(52,211,153,.08)">🥗</div>
-          <div class="card-name bc">AVID Nutrition</div>
-          <div class="card-sub">Compléments alimentaires</div>
-          <p class="card-desc">Une gamme simple et qualitative pensée pour les athlètes. Pas de superflu, pas de marketing vide — deux barres, deux objectifs distincts.</p>
-          <div class="card-cta bc" style="color:#34D399">Liste d'attente →</div>
-        </div>
-        <div class="card-features" style="align-self:center">
-          <div class="feature"><span class="feature-arrow" style="color:#34D399">→</span>2 barres aux objectifs distincts</div>
-          <div class="feature"><span class="feature-arrow" style="color:#34D399">→</span>Formules simples et transparentes</div>
-          <div class="feature"><span class="feature-arrow" style="color:#34D399">→</span>Ingrédients qualitatifs, sans remplissage</div>
-          <div class="feature"><span class="feature-arrow" style="color:#34D399">→</span>Pensé pour compléter ton entraînement</div>
-        </div>
-        <div class="card-bg-num">03</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COMMENT CA MARCHE -->
-  <section class="comment" id="comment">
-    <div class="section-tag"><div class="section-tag-line"></div>Processus</div>
-    <h2 class="section-title bc" style="text-align:left;margin-bottom:8px">COMMENT<br>ÇA MARCHE</h2>
-    <p style="font-size:14px;color:#555;max-width:360px;line-height:1.7">Trois étapes. Pas de complexité inutile.</p>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-header"><div class="step-num">01</div><div class="step-divider"></div><div class="step-role">Coach</div></div>
-        <div class="step-title bc">Tu programmes</div>
-        <p class="step-desc">Crée les blocs, semaines et séances depuis ton dashboard. Import Excel ou saisie manuelle. Génère un lien unique par athlète en un clic.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-header"><div class="step-num">02</div><div class="step-divider"></div><div class="step-role">Athlète</div></div>
-        <div class="step-title bc">Il exécute</div>
-        <p class="step-desc">L'athlète ouvre son app depuis n'importe quel téléphone. Il voit son programme, remplit son cahier séance par séance — charges, reps, RPE.</p>
-        <div class="step-arrow">→</div>
-      </div>
-      <div class="step-card">
-        <div class="step-header"><div class="step-num">03</div><div class="step-divider"></div><div class="step-role">Temps réel</div></div>
-        <div class="step-title bc">Tu analyses</div>
-        <p class="step-desc">Les données remontent instantanément sur ton dashboard. Progression, charge réelle vs prescrite, RPE moyen — tu ajustes en connaissance de cause.</p>
-      </div>
-    </div>
-    <div style="margin-top:48px;background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:24px 28px;border-top:3px solid #E63946">
-      <div style="display:flex;gap:40px;flex-wrap:wrap">
-        <div><div class="stat-num bc" style="font-size:34px">12</div><div class="stat-label">Athlètes actifs</div></div>
-        <div><div class="stat-num bc" style="font-size:34px;color:#E63946">84</div><div class="stat-label">Séances ce mois</div></div>
-        <div><div class="stat-num bc" style="font-size:34px;color:#34D399">7.2</div><div class="stat-label">RPE moyen</div></div>
-        <div><div class="stat-num bc" style="font-size:34px">5</div><div class="stat-label">Blocs en cours</div></div>
-        <div style="margin-left:auto;align-self:center;font-size:12px;color:#333;font-style:italic">Aperçu dashboard coach</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HISTOIRE -->
-  <section class="histoire" id="histoire">
-    <div class="histoire-grid">
-      <div class="quote-card">
-        <p class="quote-text">"Je n'ai pas cherché à être coach.<br>J'ai cherché un outil pour les coachs.<br><span class="quote-accent">Je ne l'ai pas trouvé.<br>Alors je l'ai construit.</span>"</p>
-        <div class="quote-author">— Fondateur, AVID Lab</div>
-        <div class="tag-cloud">
-          <span class="tag">10 ans de terrain</span>
-          <span class="tag">Autodidacte</span>
-          <span class="tag">Sports de force</span>
-          <span class="tag">Musculation</span>
-          <span class="tag">Sports d'endurance</span>
-          <span class="tag">Remise en forme</span>
-          <span class="tag">Bénévolat sportif</span>
-        </div>
-      </div>
-      <div>
-        <div class="section-tag"><div class="section-tag-line"></div>À propos</div>
-        <h2 class="histoire-title bc">10 ANS<br>DE TERRAIN.<br><span style="color:#E63946;font-size:.65em;font-weight:700">À stagner, à régresser<br>et à progresser.</span></h2>
-        <div class="histoire-body">
-          <p>Dix ans à m'entraîner, à lire tout ce que je trouvais sur la programmation sportive, à aider les gens autour de moi à progresser.</p>
-          <p style="margin-top:14px">Bénévole dans une association sportive, j'ai vu les coachs galérer chaque semaine avec le suivi de leurs athlètes. Excel, Notion, des carnets papier — des bricolages sans cohérence.</p>
-          <p style="margin-top:14px">Les outils existants ? Trop chers, trop complexes, ou pensés pour le sport de haut niveau. Alors j'ai appris à coder. Et j'ai construit AVID Lab.</p>
-        </div>
-        <div class="histoire-note">Ce projet, c'est du contenu sur la programmation sportive, des outils concrets pour les coachs, et une vision long terme de la performance accessible à tous.</div>
-        <button class="btn-red bc" style="margin-top:28px" onclick="scrollTo('contact')">Accès anticipé →</button>
-      </div>
-    </div>
-
-    <!-- Newsletter -->
-    <div style="margin-top:72px;padding-top:56px;border-top:1px solid #1e1e1e">
-      <div class="newsletter-inner">
-        <div style="max-width:400px">
-          <div class="section-tag"><div class="section-tag-line"></div>Newsletter</div>
-          <h3 class="nl-title bc">LA PERFORMANCE,<br><span style="color:#E63946">DANS TA BOÎTE MAIL.</span></h3>
-          <p class="nl-sub">Programmation sportive, nutrition, outils pour coachs — du contenu concret, sans remplissage. Une fois par semaine.</p>
-        </div>
-        <div class="nl-form">
-          <input class="nl-input" type="email" placeholder="ton@email.com" id="nl-email" />
-          <button class="btn-red bc" onclick="handleNewsletter()">S'abonner gratuitement →</button>
-          <div class="nl-disclaimer">Pas de spam. Désabonnement en 1 clic.</div>
+        <div class="card">
+          <h3 class="card-h3 bc">AVID Weekly</h3>
+          <p class="card-p">Chaque dimanche, recevez une analyse profonde sur la programmation et la performance.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta-section" id="contact">
-    <div class="cta-grid">
-      <div>
-        <h2 class="cta-title bc">PRÊT À<br>TESTER ?</h2>
-        <p class="cta-sub">Accès anticipé disponible. Rejoins les premiers coachs à utiliser AVID Lab.</p>
+  <section id="comment">
+    <div class="container">
+      <h2 class="section-title bc">Comment ça <span>marche</span></h2>
+      <div class="grid">
+        <div class="card">
+          <h3 class="card-h3 bc">1. Connectez</h3>
+          <p class="card-p">Invitez vos athlètes sur la plateforme en quelques clics.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-h3 bc">2. Analysez</h3>
+          <p class="card-p">Utilisez nos graphiques exclusifs pour repérer les plateaux avant qu'ils n'arrivent.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-h3 bc">3. Ajustez</h3>
+          <p class="card-p">Modifiez les blocs en fonction de la fatigue neuromusculaire réelle.</p>
+        </div>
       </div>
-      <div class="cta-form">
-        <input class="cta-input" type="email" placeholder="ton@email.com" id="cta-email" />
+    </div>
+  </section>
+
+  <section id="histoire">
+    <div class="container">
+      <h2 class="section-title bc">À propos d'<span>AVID</span></h2>
+      <p class="hero-p" style="text-align: left; margin-left: 0;">Né de la volonté de supprimer le "guessing" en coaching de force. AVID transforme les chiffres bruts en outils de décision pour les coachs de haut niveau.</p>
+    </div>
+  </section>
+
+  <section style="background: #101010;">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title bc">Prêt à <span>Démarrer ?</span></h2>
+      <div class="nl-form">
+        <input type="email" id="cta-email" class="nl-input" placeholder="Ton e-mail..." />
         <button class="btn-white bc" onclick="handleCTA()">Demander l'accès →</button>
-        <div class="cta-disclaimer">Pas de spam. Juste les updates qui comptent.</div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="nav-logo bc" style="font-size:16px">AVID</div>
     <div class="footer-links">
-      <button class="footer-link" onclick="scrollTo('produits')">Produits</button>
-      <button class="footer-link" onclick="scrollTo('comment')">Comment ça marche</button>
-      <button class="footer-link" onclick="scrollTo('histoire')">À propos</button>
-      <button class="footer-link" onclick="window.open('https://instagram.com')">Instagram</button>
+      <button class="footer-link bc" onclick="scrollToSection('produits')">Produits</button>
+      <button class="footer-link bc" onclick="scrollToSection('comment')">Comment ça marche</button>
+      <button class="footer-link bc" onclick="scrollToSection('histoire')">À propos</button>
     </div>
     <div class="footer-copy">© 2025 AVID Lab — avidlab.fr</div>
   </footer>
 
   <script>
-    function scrollTo(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Fonction de défilement corrigée pour prendre en compte le header fixe
+    function scrollToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        const headerHeight = 56; // La hauteur de ta nav
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
     }
+
     function handleNewsletter() {
       const email = document.getElementById('nl-email').value;
       if (email.includes('@')) {
         document.getElementById('nl-email').value = '';
         alert('✓ Bienvenue dans la liste !');
+      } else {
+        alert('Merci de saisir un e-mail valide.');
       }
     }
+
     function handleCTA() {
       const email = document.getElementById('cta-email').value;
       if (email.includes('@')) {
-        document.getElementById('cta-email').value = '';
-        alert('✓ Reçu — on revient vers toi vite.');
+        alert('Demande envoyée. Nous reviendrons vers vous rapidement !');
+      } else {
+        alert('Merci de saisir un e-mail valide.');
       }
     }
   </script>
