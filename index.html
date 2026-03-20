@@ -88,14 +88,7 @@
     overflow: hidden;
   }
   .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
+    display: none;
   }
   .hero-inner {
     max-width: var(--max);
@@ -348,14 +341,7 @@
     overflow: hidden;
   }
   .section-black::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
+    display: none;
   }
   .section-black .section-title { color: var(--white); }
   .section-black .section-sub { color: #8A9BB0; }
@@ -739,7 +725,7 @@
         <div class="produit-name bc">Dashboard Coach</div>
         <div class="produit-desc">Tous tes athlètes sur un seul écran. RPE, volume hebdomadaire, progression, activité récente — en temps réel via Firebase.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
-        <br><a class="produit-link bc" href="https://avid-dashboard.vercel.app">Accès anticipé</a>
+        <br><a class="produit-link bc" href="https://gumroad.com/avidlab">Obtenir l'accès</a>
       </div>
       <div class="produit-card">
         <div class="produit-number bc">02 — ATHLÈTE</div>
@@ -862,7 +848,7 @@
       <input class="cta-input" type="email" id="cta-email" placeholder="ton@email.com">
       <button class="cta-submit bc" onclick="handleCTA()">Obtenir l'accès</button>
     </div>
-    <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:12px;">Ou accède directement → <a href="https://avid-dashboard.vercel.app" style="color:rgba(255,255,255,.6);">avid-dashboard.vercel.app</a></p>
+    <p style="font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;">Ou découvre les offres → <a href="https://gumroad.com/avidlab" style="color:rgba(255,255,255,.8);">gumroad.com/avidlab</a></p>
   </div>
 </section>
 
