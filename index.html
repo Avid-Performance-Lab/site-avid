@@ -624,7 +624,7 @@
     <button class="nav-link" onclick="avidScroll('produits')">Produits</button>
     <button class="nav-link" onclick="avidScroll('comment')">Comment ça marche</button>
     <button class="nav-link" onclick="avidScroll('histoire')">À propos</button>
-    <button class="nav-cta" onclick="avidScroll('acces')">Accès anticipé</button>
+    <button class="nav-cta" onclick="window.open('https://gumroad.com/avidlab','_blank')">Accès anticipé</button>
   </div>
 </nav>
 
@@ -658,7 +658,7 @@
     </div>
 
     <div class="hero-btns">
-      <button class="btn-white bc" onclick="avidScroll('acces')">Accès anticipé</button>
+      <button class="btn-white bc" onclick="window.open('https://gumroad.com/avidlab','_blank')">Accès anticipé</button>
       <button class="btn-outline-white bc" onclick="avidScroll('comment')">Comment ça marche</button>
     </div>
 
@@ -733,7 +733,7 @@
         <div class="produit-name bc">App Athlète</div>
         <div class="produit-desc">Le programme dans la poche. Cahier de séance, saisie des charges, stats de progression. Fonctionne sur mobile — aucune installation.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
-        <br><a class="produit-link bc" href="https://avid-athlete.vercel.app">Tester l'app</a>
+        <br><a class="produit-link bc" href="https://gumroad.com/avidlab">Obtenir l'accès →</a>
       </div>
       <div class="produit-card">
         <div class="produit-number bc">03 — NUTRITION</div>
@@ -748,7 +748,7 @@
         <div class="produit-name bc">Mode Solo</div>
         <div class="produit-desc">Pas de coach ? Pas de problème. Crée ton propre programme, note tes charges, suis ta progression de façon totalement autonome.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
-        <br><a class="produit-link bc" href="https://avid-athlete.vercel.app/?mode=solo">Essayer Solo</a>
+        <br><a class="produit-link bc" href="https://gumroad.com/avidlab">Obtenir Solo →</a>
       </div>
     </div>
   </div>
@@ -872,17 +872,13 @@
   }
   function handleNewsletter() {
     const email = document.getElementById('nl-email').value;
-    if (email.includes('@')) {
-      document.getElementById('nl-email').value = '';
-      alert('✓ Bienvenue dans AVID Weekly !');
-    }
+    if (!email.includes('@')) return;
+    // Ouvrir Beehiiv avec l'email pré-rempli
+    window.open('https://avidweekly.beehiiv.com/subscribe?email=' + encodeURIComponent(email), '_blank');
+    document.getElementById('nl-email').value = '';
   }
   function handleCTA() {
-    const email = document.getElementById('cta-email').value;
-    if (email.includes('@')) {
-      document.getElementById('cta-email').value = '';
-      alert('✓ Reçu — on revient vers toi vite.');
-    }
+    window.open('https://gumroad.com/avidlab', '_blank');
   }
 </script>
 </body>
