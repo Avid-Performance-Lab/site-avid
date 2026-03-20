@@ -162,10 +162,10 @@
   <nav class="nav">
     <div class="nav-logo bc">AVID</div>
     <div class="nav-links">
-      <button class="nav-link" onclick="scrollTo('produits')">Produits ▾</button>
-      <button class="nav-link" onclick="scrollTo('comment')">Comment ça marche</button>
-      <button class="nav-link" onclick="scrollTo('histoire')">À propos</button>
-      <button class="nav-cta" onclick="scrollTo('contact')">Accès anticipé</button>
+      <button class="nav-link" onclick="avidScroll('produits')">Produits ▾</button>
+      <button class="nav-link" onclick="avidScroll('comment')">Comment ça marche</button>
+      <button class="nav-link" onclick="avidScroll('histoire')">À propos</button>
+      <button class="nav-cta" onclick="avidScroll('contact')">Accès anticipé</button>
     </div>
   </nav>
 
@@ -178,18 +178,18 @@
       <h1 class="hero-title bc">L'OUTIL<br>QUE LES<br><span class="accent">COACHS</span><br><span class="outline">ATTENDAIENT.</span></h1>
       <p class="hero-sub">Suivi de programme, cahier d'entrainement, nutrition et RPE — tout connecté, en temps réel. Disponible en version <strong style="color:#fff;font-weight:600">Coach</strong> ou <strong style="color:#fff;font-weight:600">Athlète solo</strong>.</p>
       <div class="hero-versions">
-        <div class="version-card red" onclick="scrollTo('produits')">
+        <div class="version-card red" onclick="avidScroll('produits')">
           <div class="version-bar" style="background:#E63946"></div>
           <div><div class="version-name bc">AVID Coach</div><div class="version-desc">Dashboard + app athlètes générées</div></div>
         </div>
-        <div class="version-card gray" onclick="scrollTo('produits')">
+        <div class="version-card gray" onclick="avidScroll('produits')">
           <div class="version-bar" style="background:#888"></div>
           <div><div class="version-name bc">AVID Athlète</div><div class="version-desc">App solo — autoprogrammation & stats</div></div>
         </div>
       </div>
       <div class="hero-btns">
-        <button class="btn-red bc" onclick="scrollTo('produits')">Découvrir les outils</button>
-        <button class="btn-ghost bc" onclick="scrollTo('histoire')">Mon histoire</button>
+        <button class="btn-red bc" onclick="avidScroll('produits')">Découvrir les outils</button>
+        <button class="btn-ghost bc" onclick="avidScroll('histoire')">Mon histoire</button>
       </div>
       <div class="hero-stats">
         <div><div class="stat-num bc">10<span class="red">ans</span></div><div class="stat-label">de terrain</div></div>
@@ -208,7 +208,7 @@
       <h2 class="nutr-title bc">PAS DE<br><span class="green">SUPERFLU.</span><br><span class="outline">JUSTE L'ESSENTIEL.</span></h2>
       <p class="nutr-sub">Une gamme de compléments alimentaires pensée pour les athlètes sérieux. Deux barres, deux objectifs distincts. Des formules simples, des ingrédients qualitatifs.</p>
       <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-        <button class="btn-green bc" onclick="scrollTo('produits')">Liste d'attente</button>
+        <button class="btn-green bc" onclick="avidScroll('produits')">Liste d'attente</button>
         <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:#3a5a48;text-transform:uppercase">Lancement prévu 2025</span>
       </div>
     </div>
@@ -220,7 +220,7 @@
       <div class="eco-num" style="color:#E63946">01 — Outil digital</div>
       <div class="eco-title bc">AVID<br><span style="color:#E63946">PERFORMANCE<br>LAB</span></div>
       <p class="eco-desc">Dashboard coach + app athlète. Tu programmes, l'athlète exécute, tu analyses.</p>
-      <div class="eco-cta" style="color:#E63946" onclick="scrollTo('produits')">Voir le détail</div>
+      <div class="eco-cta" style="color:#E63946" onclick="avidScroll('produits')">Voir le détail</div>
       <div class="eco-bg-num" style="color:rgba(230,57,70,.04)">01</div>
     </div>
     <div class="eco-card green-card">
@@ -228,7 +228,7 @@
       <div class="eco-title bc">AVID<br><span style="color:#34D399">NUTRITION</span></div>
       <p class="eco-desc" style="color:#3a5a48">Deux barres, deux objectifs. Simple, qualitatif, sans remplissage.</p>
       <div class="soon-badge-sm">Bientôt disponible</div>
-      <div class="eco-cta" style="color:#34D399;margin-top:14px" onclick="scrollTo('produits')">Liste d'attente</div>
+      <div class="eco-cta" style="color:#34D399;margin-top:14px" onclick="avidScroll('produits')">Liste d'attente</div>
       <div class="eco-bg-num" style="color:rgba(52,211,153,.04)">02</div>
     </div>
   </div>
@@ -353,7 +353,7 @@
           <p style="margin-top:14px">Les outils existants ? Trop chers, trop complexes, ou pensés pour le sport de haut niveau. Alors j'ai appris à coder. Et j'ai construit AVID Lab.</p>
         </div>
         <div class="histoire-note">Ce projet, c'est du contenu sur la programmation sportive, des outils concrets pour les coachs, et une vision long terme de la performance accessible à tous.</div>
-        <button class="btn-red bc" style="margin-top:28px" onclick="scrollTo('contact')">Accès anticipé →</button>
+        <button class="btn-red bc" style="margin-top:28px" onclick="avidScroll('contact')">Accès anticipé →</button>
       </div>
     </div>
 
@@ -393,16 +393,16 @@
   <footer class="footer">
     <div class="nav-logo bc" style="font-size:16px">AVID</div>
     <div class="footer-links">
-      <button class="footer-link" onclick="scrollTo('produits')">Produits</button>
-      <button class="footer-link" onclick="scrollTo('comment')">Comment ça marche</button>
-      <button class="footer-link" onclick="scrollTo('histoire')">À propos</button>
+      <button class="footer-link" onclick="avidScroll('produits')">Produits</button>
+      <button class="footer-link" onclick="avidScroll('comment')">Comment ça marche</button>
+      <button class="footer-link" onclick="avidScroll('histoire')">À propos</button>
       <button class="footer-link" onclick="window.open('https://instagram.com')">Instagram</button>
     </div>
     <div class="footer-copy">© 2025 AVID Lab — avidlab.fr</div>
   </footer>
 
   <script>
-    function scrollTo(id) {
+    function avidScroll(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
