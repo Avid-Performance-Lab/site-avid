@@ -204,25 +204,50 @@
   </div>
 
   <div class="panel active" id="panel-coach">
-    <div class="panel-title bc">Espace Coach</div>
-    <div class="panel-sub">Accède à ton dashboard.</div>
+    <div id="coach-view-login">
+      <div class="panel-title bc">Espace Coach</div>
+      <div class="panel-sub">Accède à ton dashboard.</div>
 
-    <div class="field">
-      <label>EMAIL</label>
-      <input type="email" id="coach-email" placeholder="ton@email.com" autocomplete="email">
+      <div class="field">
+        <label>EMAIL</label>
+        <input type="email" id="coach-email" placeholder="ton@email.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>MOT DE PASSE</label>
+        <input type="password" id="coach-password" placeholder="Ton mot de passe" autocomplete="current-password">
+      </div>
+
+      <div id="coach-feedback"></div>
+
+      <button class="btn-main bc" onclick="goToCoach()">Se connecter →</button>
+
+      <div class="links-row">
+        <span onclick="showCoachSignup()" class="bc">Première connexion ?</span>
+        <span onclick="resetPassword('coach-email','coach-feedback')" class="bc">Mot de passe oublié</span>
+      </div>
     </div>
-    <div class="field">
-      <label>MOT DE PASSE</label>
-      <input type="password" id="coach-password" placeholder="Ton mot de passe" autocomplete="current-password">
-    </div>
 
-    <div id="coach-feedback"></div>
+    <div id="coach-view-signup" style="display:none;">
+      <div class="panel-title bc">Créer mon compte</div>
+      <div class="panel-sub">Choisis un email et un mot de passe pour démarrer ton dashboard.</div>
 
-    <button class="btn-main bc" onclick="goToCoach()">Se connecter →</button>
+      <div class="field">
+        <label>EMAIL</label>
+        <input type="email" id="coach-signup-email" placeholder="ton@email.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>MOT DE PASSE</label>
+        <input type="password" id="coach-signup-password" placeholder="6 caractères minimum" autocomplete="new-password">
+      </div>
 
-    <div class="links-row">
-      <a href="mailto:contact@avidlab.fr?subject=Premi%C3%A8re%20connexion%20-%20Espace%20Coach" class="bc">Première connexion ?</a>
-      <span onclick="resetPassword('coach-email','coach-feedback')" class="bc">Mot de passe oublié</span>
+      <div id="coach-signup-feedback"></div>
+
+      <button class="btn-main bc" onclick="createCoachAccount()">Créer mon compte →</button>
+
+      <div class="links-row">
+        <span onclick="showCoachLogin()" class="bc">← Retour à la connexion</span>
+        <span></span>
+      </div>
     </div>
   </div>
 
@@ -277,7 +302,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+  import { getAuth, sendPasswordResetEmail, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA246P9MlXT2ayCYD10QYuZ9t-A9zl86h0",
@@ -315,6 +340,46 @@
     };
     return messages[code] || "Une erreur est survenue, réessaie.";
   }
+
+  window.showCoachSignup = function() {
+    document.getElementById('coach-view-login').style.display = 'none';
+    document.getElementById('coach-view-signup').style.display = 'block';
+  };
+
+  window.showCoachLogin = function() {
+    document.getElementById('coach-view-signup').style.display = 'none';
+    document.getElementById('coach-view-login').style.display = 'block';
+  };
+
+  function mapSignupError(code) {
+    const messages = {
+      'auth/invalid-email': "Email invalide.",
+      'auth/email-already-in-use': "Un compte existe déjà avec cet email. Utilise plutôt \"Se connecter\".",
+      'auth/weak-password': "Mot de passe trop court (6 caractères minimum).",
+    };
+    return messages[code] || "Une erreur est survenue, réessaie.";
+  }
+
+  window.createCoachAccount = async function() {
+    const email = document.getElementById('coach-signup-email').value.trim();
+    const password = document.getElementById('coach-signup-password').value;
+    const feedbackEl = document.getElementById('coach-signup-feedback');
+
+    if (!email || password.length < 6) {
+      feedbackEl.innerHTML = `<div class="feedback error">Email valide et mot de passe de 6 caractères minimum.</div>`;
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      feedbackEl.innerHTML = `<div class="feedback success">Compte créé ! Redirection vers ton dashboard...</div>`;
+      setTimeout(() => {
+        window.location.href = `${DASHBOARD_URL}/?email=${encodeURIComponent(email)}`;
+      }, 900);
+    } catch (e) {
+      feedbackEl.innerHTML = `<div class="feedback error">${mapSignupError(e.code)}</div>`;
+    }
+  };
 
   window.goToCoach = function() {
     const email = document.getElementById('coach-email').value.trim();
