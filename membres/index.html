@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AVID Performance Lab — Accès membres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E63946;
+    --black: #12151C;
+    --white: #FFFFFF;
+    --off-white: #F5F5F3;
+    --gray: #E8E8E4;
+    --text: #1A1A1A;
+    --muted: #888;
+    --green: #1E8C45;
+  }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: #141920;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .bc { font-family: 'Barlow Condensed', sans-serif; }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .logo-row img { height: 30px; width: auto; filter: brightness(0) invert(1); }
+  .logo-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #6A7A8E;
+    text-transform: uppercase;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
+
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--gray);
+  }
+  .tab {
+    flex: 1;
+    background: var(--off-white);
+    border: none;
+    padding: 16px 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .tab.active {
+    background: var(--white);
+    color: var(--text);
+    box-shadow: inset 0 -3px 0 var(--red);
+  }
+
+  .panel { display: none; padding: 32px 28px; }
+  .panel.active { display: block; }
+
+  .panel-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .panel-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    background: var(--off-white);
+    border: 1px solid var(--gray);
+    border-radius: 7px;
+    padding: 12px 13px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Barlow', sans-serif;
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .field input:focus { border-color: var(--black); }
+
+  .btn-main {
+    display: block;
+    width: 100%;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .2s;
+    text-align: center;
+    margin-top: 6px;
+  }
+  .btn-main:hover { background: var(--red); }
+  .btn-main:disabled { opacity: .6; cursor: default; }
+
+  .links-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-size: 11px;
+  }
+  .links-row a, .links-row span {
+    color: var(--muted);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .links-row a:hover, .links-row span:hover { color: var(--text); }
+
+  .feedback {
+    font-size: 12px;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .feedback.error { color: var(--red); }
+  .feedback.success { color: var(--green); }
+
+  .back-link {
+    margin-top: 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6A7A8E;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .back-link:hover { color: #FFF; }
+
+  @media(max-width: 480px) {
+    .panel { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-row">
+  <img src="data:image/png;base64,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zud5nmc0Go2s1WrBYDCwuVwOxWIx1DTNQEnzBUSj0dv27dt3+8SJEwevXbt2sVwuF6vV6mA0GvUXFhbeOnfu3O8ODw//dnFx8beDwc3rl5aWXi8sLb1ubWvr+vzO7t0/3ejp2Xn02LGjR44dO/rDrl27f9y9e/dPu3fv/mn37t2/HTx48OeDBw/+eujQoT8OHz78x969e/84cODAn/v27fvz4MGDf+3fv/+vw4cP/33kyJF/9uzZ8/eePXv+2b1795979uz5+8CBA//u27fvv/v27fv/vv7669Vr16799/nnn78WBIH19PSMHzp06B+GYaCbN2/i9u3boGmadOfOHbS3t+PWrVv4/vvv8fXXX+PLL7/E559/js8++wyffPIJPvroI7z//vt477338O677+Ktt97Cm2++iddffx0PPvggXn31VVy4cAGXL1/GlStX8Nlnn+GLL77AjRs38O233+Lu3bt48OABHj16hMePH+PJkyd48eIFXr16hbdv3+L9+/fY39/H0dER9vf3sbe3h729Pezu7mJnZwc7OzvY3t7G9vY2Njc3sbGxgfX1dayvr2N9fR2rq6tYWVnB0tISlpaWsLi4iIWFBSwsLGB+fh7z8/OYm5vD3Nwc5ubmMDs7i9nZWczOzmJ2dhazs7OYnZ3F7Ows5ubmMD8/j4WFBSwuLmJpaQnLy8tYWVnB6uoq1tbWsLa2ho2NDWxubmJra4v/y8oGSg8Enqrq7bffvvvVV1998M8///wsFApNiUQiu0aj0RgMBqPRaJz5NyeTyRC/38+wLIu42+02aDQaQyKRGMlkMhOJRMbxeDy+2Ww2bTbbYWNjY+PhcNhis9lsx+Pxxh8Oh0/++uuvJx88ePDkjz/++PPXX3/9548//vzz119//fPXX3/9/eeff/72yy+//NHz588fP//888dPnz59+PDhw8dHjx59fPjw4WcvXrx4+eLFi1cHBwff7O/vf7O3t/f18fHxN0dHR988ffr02c8///zzzz///PLXX3/97e3bt++GhoZuv//++9c///zzt9ba2iaWl5f7GxsbA6urq2Nzc3Nja2trY2traxsbGxsjIyPD5+fnJ4ZLQ0PD8OHDh8OHhoZGGxsbjb29vf3+/n7yD/gAAABJRU5ErkJggg==" alt="AVID">
+  <div class="logo-tagline">AVID PERFORMANCE LAB</div>
+</div>
+
+<div class="card">
+  <div class="tabs">
+    <button class="tab active bc" id="tab-coach" onclick="switchTab('coach')">Coach</button>
+    <button class="tab bc" id="tab-athlete" onclick="switchTab('athlete')">Athlète</button>
+    <button class="tab bc" id="tab-solo" onclick="switchTab('solo')">Solo</button>
+  </div>
+
+  <div class="panel active" id="panel-coach">
+    <div class="panel-title bc">Espace Coach</div>
+    <div class="panel-sub">Accède à ton dashboard.</div>
+
+    <div class="field">
+      <label>EMAIL</label>
+      <input type="email" id="coach-email" placeholder="ton@email.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>MOT DE PASSE</label>
+      <input type="password" id="coach-password" placeholder="Ton mot de passe" autocomplete="current-password">
+    </div>
+
+    <div id="coach-feedback"></div>
+
+    <button class="btn-main bc" onclick="goToCoach()">Se connecter →</button>
+
+    <div class="links-row">
+      <a href="mailto:contact@avidlab.fr?subject=Premi%C3%A8re%20connexion%20-%20Espace%20Coach" class="bc">Première connexion ?</a>
+      <span onclick="resetPassword('coach-email','coach-feedback')" class="bc">Mot de passe oublié</span>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-athlete">
+    <div class="panel-title bc">Espace Athlète</div>
+    <div class="panel-sub">Suivi par un coach ? Retrouve ton programme et ton historique.</div>
+
+    <div class="field">
+      <label>EMAIL</label>
+      <input type="email" id="athlete-email" placeholder="ton@email.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>MOT DE PASSE</label>
+      <input type="password" id="athlete-password" placeholder="Ton mot de passe" autocomplete="current-password">
+    </div>
+
+    <div id="athlete-feedback"></div>
+
+    <button class="btn-main bc" onclick="goToAthlete()">Se connecter →</button>
+
+    <div class="links-row">
+      <span class="bc" style="text-decoration:none;cursor:default;color:#AAA;">Lien reçu de ton coach ?</span>
+      <span onclick="resetPassword('athlete-email','athlete-feedback')" class="bc">Mot de passe oublié</span>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-solo">
+    <div class="panel-title bc">Espace Solo</div>
+    <div class="panel-sub">Pas de coach ? Gère ton programme en autonomie.</div>
+
+    <div class="field">
+      <label>EMAIL</label>
+      <input type="email" id="solo-email" placeholder="ton@email.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>MOT DE PASSE</label>
+      <input type="password" id="solo-password" placeholder="Ton mot de passe" autocomplete="current-password">
+    </div>
+
+    <div id="solo-feedback"></div>
+
+    <button class="btn-main bc" onclick="goToSolo()">Se connecter →</button>
+
+    <div class="links-row">
+      <a href="https://avid-athlete.vercel.app/?mode=solo" class="bc">Créer mon compte →</a>
+      <span onclick="resetPassword('solo-email','solo-feedback')" class="bc">Mot de passe oublié</span>
+    </div>
+  </div>
+</div>
+
+<a class="back-link bc" href="https://avidlab.fr">← Retour au site</a>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA246P9MlXT2ayCYD10QYuZ9t-A9zl86h0",
+    authDomain: "avid-performance-lab.firebaseapp.com",
+    projectId: "avid-performance-lab",
+    storageBucket: "avid-performance-lab.firebasestorage.app",
+    messagingSenderId: "110270991181",
+    appId: "1:110270991181:web:5f73e852b90c4935570504",
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const DASHBOARD_URL = "https://avid-dashboard.vercel.app";
+  const ATHLETE_URL = "https://avid-athlete.vercel.app";
+
+  window.switchTab = function(name) {
+    document.getElementById('tab-coach').classList.toggle('active', name === 'coach');
+    document.getElementById('tab-athlete').classList.toggle('active', name === 'athlete');
+    document.getElementById('tab-solo').classList.toggle('active', name === 'solo');
+    document.getElementById('panel-coach').classList.toggle('active', name === 'coach');
+    document.getElementById('panel-athlete').classList.toggle('active', name === 'athlete');
+    document.getElementById('panel-solo').classList.toggle('active', name === 'solo');
+  };
+
+  function showFeedback(elId, msg, isError) {
+    const el = document.getElementById(elId);
+    el.innerHTML = `<div class="feedback ${isError ? 'error' : 'success'}">${msg}</div>`;
+  }
+
+  function mapError(code) {
+    const messages = {
+      'auth/invalid-email': "Email invalide.",
+      'auth/user-not-found': "Aucun compte associé à cet email.",
+      'auth/missing-email': "Entre ton email pour recevoir le lien.",
+    };
+    return messages[code] || "Une erreur est survenue, réessaie.";
+  }
+
+  window.goToCoach = function() {
+    const email = document.getElementById('coach-email').value.trim();
+    const password = document.getElementById('coach-password').value;
+    if (!email || !password) {
+      showFeedback('coach-feedback', "Renseigne ton email et ton mot de passe.", true);
+      return;
+    }
+    window.location.href = `${DASHBOARD_URL}/?email=${encodeURIComponent(email)}`;
+  };
+
+  window.goToAthlete = function() {
+    const email = document.getElementById('athlete-email').value.trim();
+    const password = document.getElementById('athlete-password').value;
+    if (!email || !password) {
+      showFeedback('athlete-feedback', "Renseigne ton email et ton mot de passe.", true);
+      return;
+    }
+    window.location.href = `${ATHLETE_URL}/?email=${encodeURIComponent(email)}`;
+  };
+
+  window.goToSolo = function() {
+    const email = document.getElementById('solo-email').value.trim();
+    const password = document.getElementById('solo-password').value;
+    if (!email || !password) {
+      showFeedback('solo-feedback', "Renseigne ton email et ton mot de passe.", true);
+      return;
+    }
+    // Même point d'entrée que les athlètes coachés : l'app reconnaît
+    // automatiquement un profil solo via le compte une fois connecté.
+    window.location.href = `${ATHLETE_URL}/?email=${encodeURIComponent(email)}`;
+  };
+
+  window.resetPassword = async function(emailFieldId, feedbackElId) {
+    const email = document.getElementById(emailFieldId).value.trim();
+    if (!email) {
+      showFeedback(feedbackElId, "Entre ton email pour recevoir le lien.", true);
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showFeedback(feedbackElId, "Email de réinitialisation envoyé.", false);
+    } catch (e) {
+      showFeedback(feedbackElId, mapError(e.code), true);
+    }
+  };
+</script>
+</body>
+</html>
