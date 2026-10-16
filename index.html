@@ -492,6 +492,7 @@
   .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
   .footer-link a { color:inherit; text-decoration:none; }
 
+  .card-note { margin-top:16px; font-size:14px; font-weight:600; color:var(--black); }
   .card-form { margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
   .card-input { flex:1; min-width:150px; padding:11px 12px; border:1px solid var(--gray); border-radius:3px; font:14px 'Barlow',sans-serif; color:var(--text); background:#fff; }
   .card-input:focus-visible { outline:2px solid var(--red); outline-offset:1px; }
@@ -770,17 +771,11 @@
       <div class="produit-card">
         <div class="produit-number bc">02 — ATHLÈTE</div>
         <div class="produit-icon">📱</div>
-        <div class="produit-name bc">App Athlète</div>
+        <div class="produit-name bc">App Athlète coaché</div>
         <div class="produit-desc">Le programme dans la poche. Cahier de séance, saisie des charges, stats de progression. Fonctionne sur mobile — aucune installation.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
         
-        <form class="card-form" data-type="solo" onsubmit="return handleCard(event)" novalidate>
-          <input class="card-input" type="email" placeholder="ton@email.com" autocomplete="email" aria-label="Ton adresse e-mail" required>
-          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="card-btn bc" type="submit">S'inscrire</button>
-          <label class="card-consent"><input type="checkbox" required> <span>J'accepte de recevoir mon lien membre et la newsletter AVID Weekly, et la <a href="/legal#confidentialite">politique de confidentialité</a>.</span></label>
-          <div class="card-status" role="status" aria-live="polite"></div>
-        </form>
+        <p class="card-note">Demande un accès à ton coach.</p>
       </div>
       <div class="produit-card">
         <div class="produit-number bc">03 — NUTRITION</div>
@@ -792,7 +787,7 @@
       <div class="produit-card">
         <div class="produit-number bc">04 — SOLO</div>
         <div class="produit-icon">🎯</div>
-        <div class="produit-name bc">Mode Solo</div>
+        <div class="produit-name bc">App Athlète solo</div>
         <div class="produit-desc">Pas de coach ? Pas de problème. Crée ton propre programme, note tes charges, suis ta progression de façon totalement autonome.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
         
