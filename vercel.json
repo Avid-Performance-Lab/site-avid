@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/legal", "destination": "/legal.html" }]
+}
