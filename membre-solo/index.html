@@ -184,6 +184,10 @@
   }
   .back-link:hover { color: #FFF; }
 
+  .legal-note { margin-top:16px; font-size:11px; line-height:1.5; color:#6A7A8E; }
+  .legal-note a, .legal-foot a { color:inherit; }
+  .legal-foot { margin-top:14px; text-align:center; font-size:11px; color:#556699; }
+
   @media(max-width: 480px) {
     .panel { padding: 26px 20px; }
   }
@@ -217,12 +221,14 @@
       <a href="https://avid-athlete.vercel.app/?mode=solo" class="bc">Créer mon compte →</a>
       <span onclick="resetPassword('solo-email','solo-feedback')" class="bc">Mot de passe oublié</span>
     </div>
+    <p class="legal-note">En créant ton compte, tu acceptes les <a href="https://avidlab.fr/legal#cgu" target="_blank" rel="noopener">CGU</a> et la <a href="https://avidlab.fr/legal#confidentialite" target="_blank" rel="noopener">politique de confidentialité</a>.</p>
   </div>
 </div>
 
 </div>
 
 <a class="back-link bc" href="https://avidlab.fr">← Retour au site</a>
+<p class="legal-foot"><a href="https://avidlab.fr/legal#mentions-legales">Mentions légales</a> · <a href="https://avidlab.fr/legal#cgu">CGU</a> · <a href="https://avidlab.fr/legal#confidentialite">Confidentialité</a></p>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
