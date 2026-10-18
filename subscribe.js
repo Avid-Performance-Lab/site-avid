@@ -70,7 +70,8 @@ module.exports = async (req, res) => {
   const payload = {
     email,
     reactivate_existing: false,
-    send_welcome_email: true,
+    // coach/solo : seul l'e-mail de l'automation (avec le lien) est envoyé
+    send_welcome_email: type === 'newsletter',
     utm_source: 'avidlab.fr',
     utm_medium: 'site',
     utm_campaign: type,
