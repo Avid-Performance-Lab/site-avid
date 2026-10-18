@@ -150,6 +150,11 @@
   .btn-main:hover { background: var(--red); }
   .btn-main:disabled { opacity: .6; cursor: default; }
 
+  .consent { display:flex; gap:8px; align-items:flex-start; margin-top:14px; font-size:12px; line-height:1.5; color:#666; cursor:pointer; }
+  .consent input { margin-top:3px; accent-color: var(--red); flex-shrink:0; }
+  .consent a { color: var(--red); }
+  .legal-foot { margin-top:14px; text-align:center; font-size:11px; color:#556699; }
+  .legal-foot a { color:inherit; }
   .links-row {
     display: flex;
     justify-content: space-between;
@@ -238,6 +243,11 @@
         <input type="password" id="coach-signup-password" placeholder="6 caractères minimum" autocomplete="new-password">
       </div>
 
+      <label class="consent">
+        <input type="checkbox" id="coach-signup-cgu">
+        <span>J'ai lu et j'accepte les <a href="https://www.avidlab.fr/legal#cgu" target="_blank" rel="noopener">CGU</a> et la <a href="https://www.avidlab.fr/legal#confidentialite" target="_blank" rel="noopener">politique de confidentialité</a>.</span>
+      </label>
+
       <div id="coach-signup-feedback"></div>
 
       <button class="btn-main bc" onclick="createCoachAccount()">Créer mon compte →</button>
@@ -275,10 +285,12 @@
 </div>
 
 <a class="back-link bc" href="https://avidlab.fr">← Retour au site</a>
+<p class="legal-foot"><a href="https://www.avidlab.fr/legal#mentions-legales">Mentions légales</a> · <a href="https://www.avidlab.fr/legal#cgu">CGU</a> · <a href="https://www.avidlab.fr/legal#confidentialite">Confidentialité</a></p>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import { getAuth, sendPasswordResetEmail, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA246P9MlXT2ayCYD10QYuZ9t-A9zl86h0",
@@ -290,6 +302,8 @@
   };
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
+  const CGU_VERSION = "2026-10";
 
   const DASHBOARD_URL = "https://avid-dashboard.vercel.app";
   const ATHLETE_URL = "https://avid-athlete.vercel.app";
@@ -320,6 +334,8 @@
     document.getElementById('coach-view-signup').style.display = 'block';
   };
 
+  if (new URLSearchParams(window.location.search).get('mode') === 'signup') { window.showCoachSignup(); }
+
   window.showCoachLogin = function() {
     document.getElementById('coach-view-signup').style.display = 'none';
     document.getElementById('coach-view-login').style.display = 'block';
@@ -343,9 +359,18 @@
       feedbackEl.innerHTML = `<div class="feedback error">Email valide et mot de passe de 6 caractères minimum.</div>`;
       return;
     }
+    if (!document.getElementById('coach-signup-cgu').checked) {
+      feedbackEl.innerHTML = `<div class="feedback error">Coche la case pour accepter les CGU.</div>`;
+      return;
+    }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      try {
+        await setDoc(doc(db, "coaches", cred.user.uid), {
+          email, createdAt: Date.now(), cguAcceptedAt: Date.now(), cguVersion: CGU_VERSION
+        });
+      } catch (err) { console.error("Consentement CGU non enregistré :", err); }
       feedbackEl.innerHTML = `<div class="feedback success">Compte créé ! Redirection vers ton dashboard...</div>`;
       setTimeout(() => {
         window.location.href = `${DASHBOARD_URL}/?email=${encodeURIComponent(email)}`;
