@@ -1,13 +1,14 @@
 // Vercel serverless function : POST /api/subscribe
 // Variables d'environnement (Vercel > Settings > Environment Variables) :
-//   BEEHIIV_API_KEY        clé API Beehiiv (jamais dans le HTML)
-//   BEEHIIV_PUB_ID         ex. pub_07d0a784-... (à vérifier dans Beehiiv > Settings > API)
-//   TURNSTILE_SECRET       (optionnel) clé secrète Cloudflare Turnstile
-//   BEEHIIV_AUTOMATION_COACH / BEEHIIV_AUTOMATION_SOLO   (optionnel) ids d'automations
-//                          qui envoient le lien membre (déclencheur « API »)
-//   ALLOWED_ORIGIN         ex. https://avidlab.fr (optionnel mais recommandé)
+//   RESEND_API_KEY     clé API Resend (envoi du mail d'accès)
+//   MAIL_FROM          ex. AVID Performance Lab <contact@avidlab.fr>  (domaine vérifié dans Resend)
+//   COACH_LINK         lien d'inscription coach (adresse du dashboard + ?mode=signup)
+//   SOLO_LINK          (optionnel) défaut : https://avid-athlete.vercel.app/?mode=solo
+//   NOTIFY_TO          (optionnel) adresse qui reçoit une alerte à chaque inscription (défaut contact@avidlab.fr)
+//   TURNSTILE_SECRET   (optionnel) clé secrète Cloudflare Turnstile
+//   ALLOWED_ORIGIN     ex. https://www.avidlab.fr (optionnel mais recommandé)
 
-const TYPES = ['coach', 'solo', 'newsletter'];
+const TYPES = ['coach', 'solo'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Limite simple par IP (best-effort : mémoire de l'instance serverless)
@@ -21,6 +22,72 @@ function limited(ip) {
   list.push(now);
   hits.set(ip, list);
   return list.length > MAX_HITS;
+}
+
+const MAILS = {
+  coach: {
+    subject: 'Ton accès au Dashboard Coach AVID',
+    title: 'Bienvenue sur le Dashboard Coach',
+    intro: 'Crée ton compte coach pour suivre tes athlètes : programmes, charges, RPE et progression sur un seul écran.',
+    button: 'Créer mon compte coach',
+    link: () => process.env.COACH_LINK || 'https://www.avidlab.fr/membre-coach'
+  },
+  solo: {
+    subject: 'Ton accès à l\'App Athlète Solo AVID',
+    title: 'Bienvenue sur l\'App Athlète Solo',
+    intro: 'Crée ton compte pour construire ton programme, noter tes charges et suivre ta progression en autonomie.',
+    button: 'Créer mon compte',
+    link: () => process.env.SOLO_LINK || 'https://avid-athlete.vercel.app/?mode=solo'
+  }
+};
+
+function renderMail(kind) {
+  const m = MAILS[kind];
+  const url = m.link();
+  const html = `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#141920;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">
+<table role="presentation" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:10px;padding:32px 28px;">
+<tr><td>
+<div style="font-size:12px;letter-spacing:3px;font-weight:700;color:#E63946;">AVID PERFORMANCE LAB</div>
+<h1 style="font-size:24px;line-height:1.2;color:#141920;margin:12px 0 8px;">${m.title}</h1>
+<p style="font-size:15px;line-height:1.6;color:#333;margin:0 0 24px;">${m.intro}</p>
+<p style="margin:0 0 24px;"><a href="${url}" style="display:inline-block;background:#E63946;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 26px;border-radius:6px;">${m.button}</a></p>
+<p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 6px;">Si le bouton ne fonctionne pas, copie cette adresse dans ton navigateur :</p>
+<p style="font-size:13px;line-height:1.6;color:#666;word-break:break-all;margin:0 0 24px;"><a href="${url}" style="color:#E63946;">${url}</a></p>
+<p style="font-size:13px;line-height:1.6;color:#666;margin:0;">Une question ? Réponds à cet e-mail ou écris à contact@avidlab.fr.</p>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0 12px;">
+<p style="font-size:11px;line-height:1.5;color:#999;margin:0;">Tu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le. <a href="https://www.avidlab.fr/legal#confidentialite" style="color:#999;">Confidentialité</a></p>
+</td></tr></table></body></html>`;
+  const text = `${m.title}\n\n${m.intro}\n\n${m.button} : ${url}\n\nUne question ? Écris à contact@avidlab.fr.\n\nTu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le.`;
+  return { subject: m.subject, html, text };
+}
+
+async function sendAccessMail(to, kind) {
+  const { subject, html, text } = renderMail(kind);
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    body: JSON.stringify({
+      from: process.env.MAIL_FROM,
+      to: [to],
+      reply_to: 'contact@avidlab.fr',
+      subject, html, text
+    })
+  });
+  if (!r.ok) throw new Error(`Resend ${r.status} ${await r.text()}`);
+}
+
+async function notifyOwner(email, type) {
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    body: JSON.stringify({
+      from: process.env.MAIL_FROM,
+      to: [process.env.NOTIFY_TO || 'contact@avidlab.fr'],
+      subject: `Nouvelle inscription ${type}`,
+      text: `Nouvelle demande d'accès (${type}) : ${email}`
+    })
+  });
+  if (!r.ok) throw new Error(`Resend notif ${r.status} ${await r.text()}`);
 }
 
 module.exports = async (req, res) => {
@@ -63,41 +130,25 @@ module.exports = async (req, res) => {
     }
   }
 
-  const key = process.env.BEEHIIV_API_KEY;
-  const pub = process.env.BEEHIIV_PUB_ID;
-  if (!key || !pub) return res.status(500).json({ error: 'Service mal configuré.' });
-
-  const payload = {
-    email,
-    reactivate_existing: false,
-    // coach/solo : seul l'e-mail de l'automation (avec le lien) est envoyé
-    send_welcome_email: type === 'newsletter',
-    utm_source: 'avidlab.fr',
-    utm_medium: 'site',
-    utm_campaign: type,
-    // Champ personnalisé à créer dans Beehiiv (Audience > Custom fields) : « type »
-    custom_fields: [{ name: 'type', value: type }]
-  };
-  const automation =
-    type === 'coach' ? process.env.BEEHIIV_AUTOMATION_COACH :
-    type === 'solo' ? process.env.BEEHIIV_AUTOMATION_SOLO : null;
-  if (automation) payload.automation_ids = [automation];
-
-  try {
-    const r = await fetch(`https://api.beehiiv.com/v2/publications/${encodeURIComponent(pub)}/subscriptions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-      body: JSON.stringify(payload)
-    });
-    if (!r.ok) {
-      console.error('Beehiiv error', r.status, await r.text());
-      return res.status(502).json({ error: 'Inscription impossible pour le moment. Réessaie plus tard.' });
-    }
-    return res.status(200).json({ ok: true });
-  } catch (e) {
-    console.error('Beehiiv fetch failed', e);
-    return res.status(502).json({ error: 'Inscription impossible pour le moment. Réessaie plus tard.' });
+  // Coach / solo : on envoie d'abord le mail d'accès (c'est la demande de la personne)
+  if (!process.env.RESEND_API_KEY || !process.env.MAIL_FROM) {
+    console.error('RESEND_API_KEY ou MAIL_FROM manquant');
+    return res.status(500).json({ error: 'Service mal configuré.' });
   }
+  try {
+    await sendAccessMail(email, type);
+  } catch (e) {
+    console.error('Mail d\'accès :', e.message);
+    return res.status(502).json({ error: 'Envoi du mail impossible pour le moment. Réessaie plus tard.' });
+  }
+
+  // Alerte pour toi (garde une trace de l'inscription), sans bloquer si ça échoue
+  try {
+    await notifyOwner(email, type);
+  } catch (e) {
+    console.error('Alerte inscription :', e.message);
+  }
+  return res.status(200).json({ ok: true });
 };
 
 function safeJson(t) { try { return JSON.parse(t); } catch { return {}; } }

@@ -506,7 +506,14 @@
   .card-status { flex-basis:100%; font-size:13px; min-height:18px; color:var(--green); }
   .card-status.err { color:var(--red); }
 
-  /* ── NEWSLETTER BANDE NOIRE ── */
+  /* ── IDÉES ── */
+  .fb-form { display:flex; flex-direction:column; gap:10px; max-width:520px; margin-top:28px; }
+  .fb-input { width:100%; padding:13px 16px; background:#1B222C; border:1px solid #2A3340; border-radius:3px; color:#fff; font:14px 'Barlow',sans-serif; outline:none; resize:vertical; }
+  .fb-input:focus { border-color:#444; }
+  .fb-input::placeholder { color:#5A6A7E; }
+  .fb-form .nl-submit { align-self:flex-start; }
+
+  /* ── NEWSLETTER BANDE NOIRE (inutilisée) ── */
   .section-black .nl-form {
     display: flex;
     gap: 8px;
@@ -736,9 +743,9 @@
       </div>
       <div class="eco-card blue">
         <div class="eco-num">03</div>
-        <div class="eco-title bc">AVID Weekly</div>
-        <div class="eco-desc">La newsletter du dimanche. Programmation, nutrition, terrain. Pas de théorie — ce qui marche vraiment.</div>
-        <div class="eco-cta blue" onclick="avidScroll('newsletter')">S'inscrire →</div>
+        <div class="eco-title bc">Ta voix</div>
+        <div class="eco-desc">Un conseil, une idée, un bug ? L'application s'améliore avec les retours de ceux qui l'utilisent.</div>
+        <div class="eco-cta blue" onclick="avidScroll('idees')">Laisser un message →</div>
       </div>
     </div>
   </div>
@@ -764,7 +771,7 @@
           <input class="card-input" type="email" placeholder="ton@email.com" autocomplete="email" aria-label="Ton adresse e-mail" required>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="card-btn bc" type="submit">S'inscrire</button>
-          <label class="card-consent"><input type="checkbox" required> <span>J'accepte de recevoir mon lien membre et la newsletter AVID Weekly, et la <a href="/legal#confidentialite">politique de confidentialité</a>.</span></label>
+          <label class="card-consent"><input type="checkbox" required> <span>J'accepte de recevoir mon lien d'accès par e-mail, et la <a href="/legal#confidentialite">politique de confidentialité</a>.</span></label>
           <div class="card-status" role="status" aria-live="polite"></div>
         </form>
       </div>
@@ -795,7 +802,7 @@
           <input class="card-input" type="email" placeholder="ton@email.com" autocomplete="email" aria-label="Ton adresse e-mail" required>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="card-btn bc" type="submit">S'inscrire</button>
-          <label class="card-consent"><input type="checkbox" required> <span>J'accepte de recevoir mon lien membre et la newsletter AVID Weekly, et la <a href="/legal#confidentialite">politique de confidentialité</a>.</span></label>
+          <label class="card-consent"><input type="checkbox" required> <span>J'accepte de recevoir mon lien d'accès par e-mail, et la <a href="/legal#confidentialite">politique de confidentialité</a>.</span></label>
           <div class="card-status" role="status" aria-live="polite"></div>
         </form>
       </div>
@@ -866,20 +873,22 @@
   </div>
 </section>
 
-<!-- NEWSLETTER — BANDE NOIRE -->
-<section class="section-black" id="newsletter">
+<!-- IDÉES — BANDE NOIRE -->
+<section class="section-black" id="idees">
   <div class="section-inner" style="position:relative;">
     <div class="section-header">
-      <div class="section-tag"><div class="section-tag-line"></div>AVID Weekly</div>
-      <h2 class="section-title bc">LA NEWSLETTER<br><span class="accent">DU DIMANCHE.</span></h2>
-      <p class="section-sub">Programmation, nutrition, terrain. Pas de théorie — ce qui marche vraiment. Chaque dimanche, 4 minutes.</p>
+      <div class="section-tag"><div class="section-tag-line"></div>Ton avis</div>
+      <h2 class="section-title bc">ON AMÉLIORE<br><span class="accent">L'APPLICATION ENSEMBLE.</span></h2>
+      <p class="section-sub">Un conseil, une idée, une amélioration, un bug ? Laisse-moi un message. Je lis tout.</p>
     </div>
-    <div class="nl-form">
-      <input class="nl-input" type="email" id="nl-email" placeholder="ton@email.com">
-      <button class="nl-submit bc" onclick="handleNewsletter()">S'inscrire →</button>
+    <div class="fb-form">
+      <textarea class="fb-input" id="fb-message" rows="4" maxlength="1000" placeholder="Ton message…" aria-label="Ton message"></textarea>
+      <input class="fb-input" type="email" id="fb-email" placeholder="Ton e-mail (facultatif, pour que je te réponde)" autocomplete="email" aria-label="Ton e-mail (facultatif)">
+      <div class="hp" aria-hidden="true"><label>Ne pas remplir <input type="text" id="fb-website" tabindex="-1" autocomplete="off"></label></div>
+      <button class="nl-submit bc" onclick="handleFeedback()">Envoyer →</button>
     </div>
-    <p style="font-size:11px;color:#6A7A8E;margin-top:12px;">Gratuit · Sans spam · Désabonnement en 1 clic · <a href="/legal#confidentialite" style="color:inherit;">Confidentialité</a></p>
-    <div id="nl-status" role="status" aria-live="polite" style="font-size:13px;color:#fff;margin-top:10px;min-height:18px;"></div>
+    <p style="font-size:11px;color:#6A7A8E;margin-top:12px;max-width:520px;line-height:1.5;">Ton message (et ton e-mail si tu le laisses) sert uniquement à améliorer l'application et à te répondre. <a href="/legal#confidentialite" style="color:inherit;">Confidentialité</a></p>
+    <div id="fb-status" role="status" aria-live="polite" style="font-size:13px;color:#fff;margin-top:10px;min-height:18px;"></div>
   </div>
 </section>
 
@@ -910,7 +919,7 @@
       <div id="turnstile-box" style="margin-top:14px;"></div>
       <label class="consent">
         <input type="checkbox" id="cta-consent">
-        <span>J'accepte de recevoir mon lien membre par e-mail et la newsletter AVID Weekly. Je peux me désinscrire à tout moment. <a href="/legal#confidentialite">Politique de confidentialité</a>.</span>
+        <span>J'accepte de recevoir mon lien d'accès par e-mail. Mon adresse n'est utilisée que pour cela. <a href="/legal#confidentialite">Politique de confidentialité</a>.</span>
       </label>
       <div class="form-status" id="cta-status" role="status" aria-live="polite"></div>
       <p class="form-note">Vérifie tes courriers indésirables si tu ne vois rien dans les 10 minutes.</p>
@@ -927,7 +936,7 @@
   <div class="footer-links">
     <span class="footer-link" onclick="avidScroll('produits')">Produits</span>
     <span class="footer-link" onclick="avidScroll('histoire')">À propos</span>
-    <span class="footer-link" onclick="avidScroll('newsletter')">Newsletter</span>
+    <span class="footer-link" onclick="avidScroll('idees')">Idées</span>
     <span class="footer-link"><a href="/legal#mentions-legales">Mentions légales</a></span>
     <span class="footer-link"><a href="/legal#cgu">CGU</a></span>
     <span class="footer-link"><a href="/legal#confidentialite">Confidentialité</a></span>
@@ -1027,13 +1036,30 @@
     return false;
   }
 
-  async function handleNewsletter() {
-    const input = document.getElementById('nl-email');
-    const st = document.getElementById('nl-status');
-    const email = input.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { st.textContent = 'Saisis une adresse e-mail valide.'; return; }
-    const ok = await sendSignup({ email, type: 'newsletter', consent: true, website: '' }, st, null);
-    if (ok) { st.textContent = 'Merci ! Confirme ton e-mail pour finaliser ton inscription.'; input.value = ''; }
+  async function handleFeedback() {
+    const msg = document.getElementById('fb-message').value.trim();
+    const email = document.getElementById('fb-email').value.trim();
+    const st = document.getElementById('fb-status');
+    if (msg.length < 5) { st.textContent = 'Écris un petit message avant d\'envoyer.'; return; }
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { st.textContent = 'Cette adresse e-mail semble invalide.'; return; }
+    st.textContent = 'Envoi en cours…';
+    try {
+      const r = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, email, website: document.getElementById('fb-website').value })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok) {
+        st.textContent = 'Merci pour ton message !';
+        document.getElementById('fb-message').value = '';
+        document.getElementById('fb-email').value = '';
+      } else {
+        st.textContent = d.error || 'Une erreur est survenue. Réessaie dans un instant.';
+      }
+    } catch (e) {
+      st.textContent = 'Connexion impossible. Réessaie dans un instant.';
+    }
   }
 </script>
 </body>
