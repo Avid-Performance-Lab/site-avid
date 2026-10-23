@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AVID Performance Lab — Dashboard coach & App athlète</title>
+<meta name="description" content="Dashboard coach + App athlète synchronisés en temps réel : programmation, suivi des charges, RPE, progression. Accès gratuit, sans carte bancaire.">
+<link rel="canonical" href="https://www.avidlab.fr/">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AVID Performance Lab">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://www.avidlab.fr/">
+<meta property="og:title" content="AVID Performance Lab — Dashboard coach &amp; App athlète">
+<meta property="og:description" content="Dashboard coach + App athlète synchronisés en temps réel : programmation, suivi des charges, RPE, progression. Accès gratuit, sans carte bancaire.">
+<meta property="og:image" content="https://www.avidlab.fr/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AVID Performance Lab — Dashboard coach &amp; App athlète">
+<meta name="twitter:description" content="Dashboard coach + App athlète synchronisés en temps réel : programmation, suivi des charges, RPE, progression. Accès gratuit, sans carte bancaire.">
+<meta name="twitter:image" content="https://www.avidlab.fr/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -739,7 +755,7 @@
         <div class="eco-num">02</div>
         <div class="eco-title bc">AVID Nutrition</div>
         <div class="eco-desc">Suivi nutritionnel intégré. Calories, macros, hydratation. Le tout dans ta poche.</div>
-        <div class="eco-cta green">Liste d'attente →</div>
+        <div class="eco-cta green" onclick="avidScroll('produits')">Voir le détail →</div>
       </div>
       <div class="eco-card blue">
         <div class="eco-num">03</div>
