@@ -34,22 +34,28 @@ const MAILS = {
   coach: {
     subject: 'Ton accès au Dashboard Coach AVID',
     title: 'Bienvenue sur le Dashboard Coach',
-    intro: 'Crée ton compte coach pour suivre tes athlètes : programmes, charges, RPE et progression sur un seul écran.',
-    button: 'Créer mon compte coach',
-    link: () => cleanUrl(process.env.COACH_LINK, 'https://www.avidlab.fr/membre-coach?mode=signup')
+    intro: 'Suis tes athlètes : programmes, charges, RPE et progression sur un seul écran. Première visite ? Clique sur « Première connexion ? » pour créer ton compte. Ensuite, ce même lien te sert à te connecter : enregistre-le dans tes favoris.',
+    button: 'Accéder à mon espace coach',
+    link: () => cleanUrl(process.env.COACH_LINK, 'https://www.avidlab.fr/membre-coach')
   },
   solo: {
     subject: 'Ton accès à l\'App Athlète Solo AVID',
     title: 'Bienvenue sur l\'App Athlète Solo',
-    intro: 'Crée ton compte pour construire ton programme, noter tes charges et suivre ta progression en autonomie.',
-    button: 'Créer mon compte',
-    link: () => cleanUrl(process.env.SOLO_LINK, 'https://avid-athlete.vercel.app/?mode=solo')
+    intro: 'Construis ton programme, note tes charges et suis ta progression en autonomie. Clique sur le bouton pour créer ton compte (3 étapes, 2 minutes). Ensuite, enregistre le lien de connexion ci-dessous dans tes favoris.',
+    button: 'Créer mon compte solo',
+    link: () => cleanUrl(process.env.SOLO_LINK, 'https://avid-athlete.vercel.app/?mode=solo'),
+    secondary: () => ({ label: 'Déjà un compte ? Connecte-toi ici :', url: cleanUrl(process.env.SOLO_LOGIN_LINK, 'https://www.avidlab.fr/membre-solo') })
   }
 };
 
 function renderMail(kind) {
   const m = MAILS[kind];
   const url = m.link();
+  const sec = m.secondary ? m.secondary() : null;
+  const secondaryHtml = sec
+    ? `<p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 24px;">${sec.label}<br><a href="${sec.url}" style="color:#E63946;word-break:break-all;">${sec.url}</a></p>`
+    : '';
+  const secondaryText = sec ? `\n\n${sec.label} ${sec.url}` : '';
   const html = `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#141920;padding:24px 12px;font-family:Arial,Helvetica,sans-serif;">
 <table role="presentation" width="100%" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:10px;padding:32px 28px;">
 <tr><td>
@@ -59,6 +65,7 @@ function renderMail(kind) {
 <p style="margin:0 0 24px;"><a href="${url}" style="display:inline-block;background:#E63946;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 26px;border-radius:6px;">${m.button}</a></p>
 <p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 6px;">Si le bouton ne fonctionne pas, copie cette adresse dans ton navigateur :</p>
 <p style="font-size:13px;line-height:1.6;color:#666;word-break:break-all;margin:0 0 24px;"><a href="${url}" style="color:#E63946;">${url}</a></p>
+${secondaryHtml}
 <div style="background:#f6f6f4;border-radius:8px;padding:16px 18px;margin:0 0 24px;">
 <p style="font-size:14px;font-weight:700;color:#141920;margin:0 0 8px;">Garde l'application sur ton écran d'accueil</p>
 <p style="font-size:13px;line-height:1.6;color:#444;margin:0 0 8px;">Une fois ton compte créé et connecté, ajoute l'application à ton téléphone pour l'ouvrir comme une vraie app :</p>
@@ -69,7 +76,7 @@ function renderMail(kind) {
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0 12px;">
 <p style="font-size:11px;line-height:1.5;color:#999;margin:0;">Tu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le. <a href="https://www.avidlab.fr/legal#confidentialite" style="color:#999;">Confidentialité</a></p>
 </td></tr></table></body></html>`;
-  const text = `${m.title}\n\n${m.intro}\n\n${m.button} : ${url}\n\nGARDE L'APPLICATION SUR TON ÉCRAN D'ACCUEIL\nUne fois connecté :\n- iPhone (Safari) : bouton Partager, puis « Sur l'écran d'accueil », puis « Ajouter ».\n- Android (Chrome) : menu ⋮, puis « Ajouter à l'écran d'accueil » ou « Installer l'application ».\n\nUne question ? Écris à contact@avidlab.fr.\n\nTu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le.`;
+  const text = `${m.title}\n\n${m.intro}\n\n${m.button} : ${url}${secondaryText}\n\nGARDE L'APPLICATION SUR TON ÉCRAN D'ACCUEIL\nUne fois connecté :\n- iPhone (Safari) : bouton Partager, puis « Sur l'écran d'accueil », puis « Ajouter ».\n- Android (Chrome) : menu ⋮, puis « Ajouter à l'écran d'accueil » ou « Installer l'application ».\n\nUne question ? Écris à contact@avidlab.fr.\n\nTu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le.`;
   return { subject: m.subject, html, text };
 }
 
