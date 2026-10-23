@@ -24,20 +24,26 @@ function limited(ip) {
   return list.length > MAX_HITS;
 }
 
+// Extrait une adresse https propre, même si la variable contient du format « [lien](lien) »
+function cleanUrl(value, fallback) {
+  const m = String(value || '').match(/https?:\/\/[^\s\]\)\[\(<>"']+/);
+  return m ? m[0] : fallback;
+}
+
 const MAILS = {
   coach: {
     subject: 'Ton accès au Dashboard Coach AVID',
     title: 'Bienvenue sur le Dashboard Coach',
     intro: 'Crée ton compte coach pour suivre tes athlètes : programmes, charges, RPE et progression sur un seul écran.',
     button: 'Créer mon compte coach',
-    link: () => process.env.COACH_LINK || 'https://www.avidlab.fr/membre-coach'
+    link: () => cleanUrl(process.env.COACH_LINK, 'https://www.avidlab.fr/membre-coach?mode=signup')
   },
   solo: {
     subject: 'Ton accès à l\'App Athlète Solo AVID',
     title: 'Bienvenue sur l\'App Athlète Solo',
     intro: 'Crée ton compte pour construire ton programme, noter tes charges et suivre ta progression en autonomie.',
     button: 'Créer mon compte',
-    link: () => process.env.SOLO_LINK || 'https://avid-athlete.vercel.app/?mode=solo'
+    link: () => cleanUrl(process.env.SOLO_LINK, 'https://avid-athlete.vercel.app/?mode=solo')
   }
 };
 
@@ -53,11 +59,17 @@ function renderMail(kind) {
 <p style="margin:0 0 24px;"><a href="${url}" style="display:inline-block;background:#E63946;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 26px;border-radius:6px;">${m.button}</a></p>
 <p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 6px;">Si le bouton ne fonctionne pas, copie cette adresse dans ton navigateur :</p>
 <p style="font-size:13px;line-height:1.6;color:#666;word-break:break-all;margin:0 0 24px;"><a href="${url}" style="color:#E63946;">${url}</a></p>
+<div style="background:#f6f6f4;border-radius:8px;padding:16px 18px;margin:0 0 24px;">
+<p style="font-size:14px;font-weight:700;color:#141920;margin:0 0 8px;">Garde l'application sur ton écran d'accueil</p>
+<p style="font-size:13px;line-height:1.6;color:#444;margin:0 0 8px;">Une fois ton compte créé et connecté, ajoute l'application à ton téléphone pour l'ouvrir comme une vraie app :</p>
+<p style="font-size:13px;line-height:1.6;color:#444;margin:0 0 6px;"><strong>iPhone (Safari)</strong> : ouvre l'application dans Safari, touche le bouton Partager (le carré avec une flèche vers le haut), puis « Sur l'écran d'accueil », puis « Ajouter ».</p>
+<p style="font-size:13px;line-height:1.6;color:#444;margin:0;"><strong>Android (Chrome)</strong> : ouvre l'application dans Chrome, touche le menu ⋮ en haut à droite, puis « Ajouter à l'écran d'accueil » (ou « Installer l'application »), puis confirme.</p>
+</div>
 <p style="font-size:13px;line-height:1.6;color:#666;margin:0;">Une question ? Réponds à cet e-mail ou écris à contact@avidlab.fr.</p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0 12px;">
 <p style="font-size:11px;line-height:1.5;color:#999;margin:0;">Tu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le. <a href="https://www.avidlab.fr/legal#confidentialite" style="color:#999;">Confidentialité</a></p>
 </td></tr></table></body></html>`;
-  const text = `${m.title}\n\n${m.intro}\n\n${m.button} : ${url}\n\nUne question ? Écris à contact@avidlab.fr.\n\nTu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le.`;
+  const text = `${m.title}\n\n${m.intro}\n\n${m.button} : ${url}\n\nGARDE L'APPLICATION SUR TON ÉCRAN D'ACCUEIL\nUne fois connecté :\n- iPhone (Safari) : bouton Partager, puis « Sur l'écran d'accueil », puis « Ajouter ».\n- Android (Chrome) : menu ⋮, puis « Ajouter à l'écran d'accueil » ou « Installer l'application ».\n\nUne question ? Écris à contact@avidlab.fr.\n\nTu reçois cet e-mail parce que tu as demandé un accès sur avidlab.fr. Si ce n'est pas toi, ignore-le.`;
   return { subject: m.subject, html, text };
 }
 
@@ -152,3 +164,5 @@ module.exports = async (req, res) => {
 };
 
 function safeJson(t) { try { return JSON.parse(t); } catch { return {}; } }
+
+module.exports.renderMail = renderMail;
