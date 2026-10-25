@@ -666,15 +666,17 @@
 
   /* Hero : texte + aperçu */
   .hero-top {
+    --bleed: clamp(0px, calc((100vw - 1100px) / 2 - 30px), 140px);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(calc(520px + var(--bleed)), 52%));
     gap: 48px;
     align-items: center;
     margin-bottom: 56px;
+    margin-right: calc(-1 * var(--bleed));
   }
   .hero-main { min-width: 0; }
   .hero-main .hero-btns { margin-bottom: 0; }
-  .hero-visual { position: relative; margin: 0; padding-bottom: 22px; }
+  .hero-visual { position: relative; margin: 0; padding-bottom: 26px; }
   .hero-frame {
     aspect-ratio: 16 / 10;
     border-radius: 8px;
@@ -682,46 +684,51 @@
     border: 1px solid #2e3848;
     background: #0e1218;
     box-shadow: 0 18px 40px rgba(0,0,0,.45);
-    color: #556;
   }
   .hero-phone {
     position: absolute;
-    right: -14px;
+    right: -12px;
     bottom: 0;
-    width: 29%;
+    width: 30%;
     aspect-ratio: 750 / 1089;
     border-radius: 16px;
     overflow: hidden;
-    border: 2px solid #2e3848;
+    border: 2px solid #3a4558;
     background: #0e1218;
     box-shadow: 0 14px 30px rgba(0,0,0,.55);
-    color: #556;
+    z-index: 2;
   }
+  .hero-phone--light { right: calc(30% - 22px); bottom: 12px; width: 27%; border-radius: 15px; z-index: 1; }
   @media(min-width: 961px) {
     .hero-title { font-size: clamp(60px, 7.2vw, 96px); }
   }
 
-  /* Cartes produits : petite vignette à droite */
-  .produit-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-  .produit-top-text { min-width: 0; }
-  .produit-shot {
-    flex: 0 0 auto;
-    width: 108px;
-    aspect-ratio: 4 / 3;
-    margin: 0;
-    border-radius: 6px;
+  /* Cartes produits : aperçu à droite (écran entier pour les apps) */
+  .produit-card.has-media { display: flow-root; }
+  .produit-media {
+    float: right;
+    margin: 0 0 14px 20px;
     overflow: hidden;
-    border: 1px solid #E2E2DC;
     background: #12151C;
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
-    color: #9a9a94;
+    box-shadow: 0 8px 22px rgba(0,0,0,.18);
   }
-  .produit-shot.is-empty { background: #F0F0EC; }
+  .produit-media--wide { width: clamp(130px, 50%, 250px); aspect-ratio: 4 / 3; border-radius: 8px; border: 1px solid #E2E2DC; }
+  .produit-media--phone { width: clamp(96px, 38%, 200px); aspect-ratio: 750 / 1089; border-radius: 16px; border: 3px solid #1c2230; }
+  .produit-media ~ .card-form { clear: right; }
 
   @media(max-width: 960px) {
-    .hero-top { grid-template-columns: 1fr; gap: 36px; margin-bottom: 40px; }
+    .hero-top { grid-template-columns: 1fr; gap: 36px; margin-bottom: 40px; margin-right: 0; }
     .hero-main .hero-btns { margin-bottom: 0; }
-    .hero-visual { width: 100%; max-width: 420px; margin: 0 auto; }
+    .hero-visual { width: 100%; max-width: 480px; margin: 0 auto; }
+  }
+  @media(min-width: 769px) and (max-width: 1000px) {
+    .produit-media--wide { width: clamp(120px, 40%, 200px); }
+    .produit-media--phone { width: clamp(90px, 28%, 160px); }
+  }
+  @media(max-width: 560px) {
+    .produit-media { float: none; margin: 0 auto 22px; }
+    .produit-media--wide { width: 100%; }
+    .produit-media--phone { width: 170px; }
   }
 
   /* ── RESPONSIVE ── */
@@ -787,10 +794,13 @@
     </div>
     <figure class="hero-visual">
       <div class="shot hero-frame" data-label="Capture dashboard coach">
-        <img src="img/hero-dashboard.webp" alt="Aperçu du dashboard coach AVID : suivi des athlètes, RPE et volume hebdomadaire" width="800" height="500" decoding="async" fetchpriority="high" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+        <img src="img/hero-dashboard.webp" alt="Aperçu du dashboard coach AVID : suivi des athlètes, RPE et volume hebdomadaire" width="920" height="575" decoding="async" fetchpriority="high" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+      </div>
+      <div class="shot hero-phone hero-phone--light" data-label="App mode clair">
+        <img src="img/hero-app-light.webp" alt="App athlète AVID en mode clair : statistiques et top charges" width="480" height="697" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
       </div>
       <div class="shot hero-phone" data-label="App">
-        <img src="img/hero-app.webp" alt="Aperçu de l'app athlète AVID sur mobile" width="600" height="871" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+        <img src="img/hero-app.webp" alt="App athlète AVID en mode sombre : statistiques et top charges" width="480" height="697" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
       </div>
     </figure>
   </div>
@@ -852,16 +862,12 @@
       <p class="section-sub">La performance ne se limite pas à la salle. Elle se programme, se suit, et se nourrit.</p>
     </div>
     <div class="produits-grid">
-      <div class="produit-card">
-        <div class="produit-top">
-          <div class="produit-top-text">
-            <div class="produit-number bc">01 — COACH</div>
-            <div class="produit-icon">🖥</div>
-          </div>
-          <figure class="shot produit-shot" data-label="Dashboard">
-            <img src="img/card-dashboard.webp" alt="Dashboard coach AVID : vue multi-athlètes" width="400" height="300" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
-          </figure>
-        </div>
+      <div class="produit-card has-media">
+        <figure class="shot produit-media produit-media--wide" data-label="Dashboard coach">
+          <img src="img/card-dashboard.webp" alt="Dashboard coach AVID : tableau de bord multi-athlètes avec RPE, volume et activité récente" width="480" height="360" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+        </figure>
+        <div class="produit-number bc">01 — COACH</div>
+        <div class="produit-icon">🖥</div>
         <div class="produit-name bc">Dashboard Coach</div>
         <div class="produit-desc">Tous tes athlètes sur un seul écran. RPE, volume hebdomadaire, progression, activité récente — en temps réel via Firebase.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
@@ -874,16 +880,12 @@
           <div class="card-status" role="status" aria-live="polite"></div>
         </form>
       </div>
-      <div class="produit-card">
-        <div class="produit-top">
-          <div class="produit-top-text">
-            <div class="produit-number bc">02 — ATHLÈTE</div>
-            <div class="produit-icon">📱</div>
-          </div>
-          <figure class="shot produit-shot" data-label="App coachée">
-            <img src="img/card-coache.webp" alt="App athlète coaché AVID : séance prescrite par le coach et cahier de l'athlète" width="400" height="300" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
-          </figure>
-        </div>
+      <div class="produit-card has-media">
+        <figure class="shot produit-media produit-media--phone" data-label="App athlète coaché">
+          <img src="img/card-coache.webp" alt="App athlète coaché AVID : séance prescrite par le coach et cahier de l'athlète" width="400" height="581" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+        </figure>
+        <div class="produit-number bc">02 — ATHLÈTE</div>
+        <div class="produit-icon">📱</div>
         <div class="produit-name bc">App Athlète coaché</div>
         <div class="produit-desc">Le programme dans la poche. Cahier de séance, saisie des charges, stats de progression. Fonctionne sur mobile — aucune installation.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
@@ -897,16 +899,12 @@
         <div class="produit-desc">Suivi nutritionnel intégré dans l'app athlète. KCAL, macros, hydratation.</div>
         <span class="produit-tag tag-live bc">✓ Déjà inclus dans l'application</span>
       </div>
-      <div class="produit-card">
-        <div class="produit-top">
-          <div class="produit-top-text">
-            <div class="produit-number bc">04 — SOLO</div>
-            <div class="produit-icon">🎯</div>
-          </div>
-          <figure class="shot produit-shot" data-label="App solo">
-            <img src="img/card-solo.webp" alt="App athlète solo AVID : écran de séance" width="400" height="300" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
-          </figure>
-        </div>
+      <div class="produit-card has-media">
+        <figure class="shot produit-media produit-media--phone" data-label="App athlète solo">
+          <img src="img/card-solo.webp" alt="App athlète solo AVID : saisie d'une séance avec séries, charges et RPE" width="400" height="581" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+        </figure>
+        <div class="produit-number bc">04 — SOLO</div>
+        <div class="produit-icon">🎯</div>
         <div class="produit-name bc">App Athlète solo</div>
         <div class="produit-desc">Pas de coach ? Pas de problème. Crée ton propre programme, note tes charges, suis ta progression de façon totalement autonome.</div>
         <span class="produit-tag tag-live bc">✓ Disponible</span>
