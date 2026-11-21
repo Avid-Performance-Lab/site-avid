@@ -25,26 +25,28 @@ module.exports = async (req, res) => {
 
   const body = typeof req.body === 'string' ? safeJson(req.body) : (req.body || {});
   if (body.website) return res.status(200).json({ ok: true }); // honeypot
+  const lang = body.lang === 'en' ? 'en' : 'fr';
+  const L = (fr, en) => (lang === 'en' ? en : fr);
 
   const message = String(body.message || '').trim();
   const email = String(body.email || '').trim().toLowerCase();
-  if (message.length < 5) return res.status(400).json({ error: 'Écris un petit message avant d\'envoyer.' });
-  if (message.length > 1000) return res.status(400).json({ error: 'Message trop long (1000 caractères maximum).' });
-  if (email && (!EMAIL_RE.test(email) || email.length > 254)) return res.status(400).json({ error: 'Adresse e-mail invalide.' });
+  if (message.length < 5) return res.status(400).json({ error: L('Écris un petit message avant d\'envoyer.', 'Write a short message before sending.') });
+  if (message.length > 1000) return res.status(400).json({ error: L('Message trop long (1000 caractères maximum).', 'Message too long (1000 characters maximum).') });
+  if (email && (!EMAIL_RE.test(email) || email.length > 254)) return res.status(400).json({ error: L('Adresse e-mail invalide.', 'Invalid email address.') });
 
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-  if (limited(ip)) return res.status(429).json({ error: 'Trop de messages. Réessaie dans quelques minutes.' });
+  if (limited(ip)) return res.status(429).json({ error: L('Trop de messages. Réessaie dans quelques minutes.', 'Too many messages. Please try again in a few minutes.') });
 
   if (!process.env.RESEND_API_KEY || !process.env.MAIL_FROM) {
     console.error('RESEND_API_KEY ou MAIL_FROM manquant');
-    return res.status(500).json({ error: 'Service mal configuré.' });
+    return res.status(500).json({ error: L('Service mal configuré.', 'Service misconfigured.') });
   }
 
   try {
     const payload = {
       from: process.env.MAIL_FROM,
       to: [process.env.FEEDBACK_TO || 'contact@avidlab.fr'],
-      subject: 'Idée / retour AVID',
+      subject: 'Idée / retour AVID' + (lang === 'en' ? ' (EN)' : ''),
       // Texte brut uniquement : le message d'un visiteur n'est jamais interprété comme du HTML
       text: `${message}\n\n— ${email || 'e-mail non communiqué'}`
     };
@@ -56,12 +58,12 @@ module.exports = async (req, res) => {
     });
     if (!r.ok) {
       console.error('Resend feedback', r.status, await r.text());
-      return res.status(502).json({ error: 'Envoi impossible pour le moment. Réessaie plus tard.' });
+      return res.status(502).json({ error: L('Envoi impossible pour le moment. Réessaie plus tard.', 'Unable to send right now. Please try again later.') });
     }
     return res.status(200).json({ ok: true });
   } catch (e) {
     console.error('Feedback :', e);
-    return res.status(502).json({ error: 'Envoi impossible pour le moment. Réessaie plus tard.' });
+    return res.status(502).json({ error: L('Envoi impossible pour le moment. Réessaie plus tard.', 'Unable to send right now. Please try again later.') });
   }
 };
 
